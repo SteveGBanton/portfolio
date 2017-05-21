@@ -1,13 +1,9 @@
 import React from 'react'
-//import Redux from 'redux'
 var Redux = require('redux')
 import { render } from 'react-dom'
 import './stylesheets/index.scss'
-
 var d3 = require('d3')
-
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
-
 const { Component } = React
 const { combineReducers, createStore } = Redux
 
