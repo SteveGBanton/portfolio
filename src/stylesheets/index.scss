@@ -1,0 +1,152 @@
+@import url(https://fonts.googleapis.com/css?family=Condiment);
+
+
+//-----------
+//Viewport Adjustments
+//-----------
+
+//-----------
+//Main CSS
+//-----------
+
+body {
+  padding: 0;
+  margin: 0;
+  background-color: black;
+  font-family: Lucida Console, Monaco, monospace;
+  overflow-x: hidden;
+}
+
+#react-container {
+  margin: 0;
+  padding: 0;
+  color: white;
+  h1 {
+    font-family: 'Condiment';
+    font-weight: 100;
+    font-size: 75px;
+    font-style: bold;
+    margin: 0;
+    padding: 0;
+  }
+  h2 {
+    font-family: 'Condiment';
+    font-weight: 100;
+    font-size: 30px;
+    margin-bottom: 20px;
+  }
+}
+
+.app {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+
+#menu {
+  flex: 0 1 auto;
+  margin: 0;
+  width: 350px;
+  padding: 4vw;
+  background-color: #000;
+  z-index: 1;
+
+}
+
+#view {
+  flex: 1 1 auto;
+  width: 500px;
+  margin: 0;
+  padding: 4vw;
+  background-color: #000;
+  z-index: 0;
+}
+
+
+.submit-button {
+  border: 0px;
+  background-color: white;
+  color: black;
+  padding: 8px;
+  margin: 16px;
+  cursor: pointer;
+  &:active {
+    background-color: #1976D2
+
+  }
+}
+
+.menuitem {
+  width: 200px;
+  cursor: pointer;
+  background-color: white;
+  color: black;
+  display: block;
+  padding: 10px;
+  margin: 10px auto 10px auto;
+  &:hover {
+    text-decoration: underline;
+  }
+
+}
+
+.header-image {
+  border-radius: 100px;
+  filter: grayscale(100%);
+  display: block;
+  margin: 0 auto 0 auto;
+  image-rendering: pixelated;
+}
+
+.label-text {
+
+  font-size: 10px;
+  text-align: center
+}
+
+.created-with {
+  padding-left: 77px;
+  font-size: 10px;
+  font-align: left;
+}
+
+.spacer {
+  margin-top: 40px;
+}
+
+
+.icons {
+  fill: white;
+}
+
+#chart3 {
+  width: 300px;
+  margin: 0 auto 30px auto;
+}
+
+#blink {
+	opacity: 0;
+	animation: cursor 1s infinite;
+}
+
+@keyframes cursor {
+	0% {
+		opacity: 0;
+	}
+	40% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	90% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}

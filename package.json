@@ -1,0 +1,35 @@
+{
+  "name": "react-essential",
+  "version": "1.0.0",
+  "description": "A project focusing on React and related tools",
+  "main": "index.js",
+  "scripts": {
+    "start": "./node_modules/.bin/webpack-dev-server"
+  },
+  "author": "Eve Porcello",
+  "license": "MIT",
+  "devDependencies": {
+    "autoprefixer-loader": "^3.2.0",
+    "babel-cli": "^6.24.1",
+    "babel-loader": "^6.4.1",
+    "babel-preset-latest": "^6.24.0",
+    "babel-preset-react": "^6.23.0",
+    "babel-preset-stage-0": "^6.22.0",
+    "css-loader": "^0.25.0",
+    "json-loader": "^0.5.4",
+    "node-sass": "^3.13.1",
+    "sass-loader": "^4.1.1",
+    "style-loader": "^0.13.2",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.3"
+  },
+  "dependencies": {
+    "d3": "^4.9.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-icons": "^2.2.3",
+    "react-router": "^4.0.0",
+    "react-router-dom": "^4.0.0",
+    "redux": "^3.6.0"
+  }
+}
