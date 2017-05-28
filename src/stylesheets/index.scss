@@ -88,9 +88,22 @@ body {
 
 }
 
+#menu-on {
+  flex: 0 1 auto;
+  margin: 0;
+  width: 350px;
+  padding: 4vw;
+  background-color: #000;
+  z-index: 1;
+}
+
+#menu-controller {
+  display: none;
+}
+
 #view {
   flex: 1 1 auto;
-  width: 500px;
+  width: 300px;
   margin: 0;
   padding: 4vw;
   background-color: #000;
@@ -192,7 +205,56 @@ body {
 }
 
 
-
 //-----------
 //Viewport Adjustments
 //-----------
+
+
+/* Small Device Rendering */
+
+@media screen and (max-width: 850px) {
+
+  #menu {
+    position: absolute;
+    width: 100vw;
+    opacity: 0;
+    z-index: -1;
+  }
+
+  #menu-on {
+    position: absolute;
+    width: 100vw;
+    opacity: 1;
+    z-index: 2;
+    left: 0;
+    background-color: rgba(0,0,0,0.9);
+    animation: menu-in 0.5s;
+  }
+
+  #menu-controller {
+    z-index:2;
+    font-size: 25px;
+    display: block;
+    padding: 20px;
+    width: 100vw;
+  }
+
+  @keyframes menu-in {
+  	0% {
+      opacity: 0;
+  	}
+  	100% {
+  		opacity: 100;
+  	}
+  }
+
+  @keyframes menu-out {
+  	0% {
+      left: 0;
+  	}
+  	100% {
+  		left: -100vw;
+  	}
+  }
+
+}

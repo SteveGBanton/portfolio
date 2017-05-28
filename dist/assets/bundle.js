@@ -191,16 +191,19 @@
 	//localStorage.clear()
 
 	var defaultData = {
-	  current: 'home' };
+	  current: 'home', //second field: editing on or off
+	  menuDisplayed: false
+	};
 
-	var initialState = localStorage['sb_recipe_state'] ? JSON.parse(localStorage['sb_recipe_state']) : defaultData;
+	var initialState = defaultData;
 
 	//==============================//
-	//Actions List
+	//Constants / Actions List
 	//==============================//
 
 	var C = {
-	  SCREEN_DISPLAYED: 'SCREEN_DISPLAYED'
+	  SCREEN_DISPLAYED: 'SCREEN_DISPLAYED',
+	  MENU_DISPLAYED: 'MENU_DISPLAYED'
 	};
 
 	//==============================//
@@ -219,10 +222,25 @@
 	  }
 	};
 
+	var menuDisplayed = function menuDisplayed() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [false];
+	  var action = arguments[1];
+
+
+	  if (action.type === C.MENU_DISPLAYED) {
+	    return action.payload;
+	  } else if (action.type === C.SCREEN_DISPLAYED) {
+	    return false;
+	  } else {
+	    return state;
+	  }
+	};
+
 	//Combine all reducers to appReducer
 
 	var appReducer = combineReducers({
-	  current: current
+	  current: current,
+	  menuDisplayed: menuDisplayed
 	});
 
 	//==============================//
@@ -244,6 +262,14 @@
 	  return {
 	    type: C.SCREEN_DISPLAYED,
 	    payload: displayed
+	  };
+	};
+
+	var changeMenuDisplay = function changeMenuDisplay(toggle) {
+
+	  return {
+	    type: C.MENU_DISPLAYED,
+	    payload: toggle
 	  };
 	};
 
@@ -427,80 +453,94 @@
 
 	//Major Windows, Called From Parent
 
-	var Menu = function Menu() {
+	var Menu = function Menu(_ref5) {
+	  var menu = _ref5.menu;
+
 
 	  return _react2.default.createElement(
 	    'div',
-	    { id: 'menu' },
-	    _react2.default.createElement('img', { className: 'header-image', src: 'steve.png', width: '150' }),
+	    { id: 'menu-container' },
 	    _react2.default.createElement(
-	      'p',
-	      { className: 'label-text' },
-	      'Steve Banton'
-	    ),
-	    _react2.default.createElement(
-	      'p',
-	      { className: 'label-text' },
-	      'Full Stack Web & Mobile Developer'
-	    ),
-	    _react2.default.createElement('p', { className: 'spacer' }),
-	    _react2.default.createElement(
-	      'p',
-	      { className: 'menuitem', onClick: function onClick() {
+	      'div',
+	      { id: 'menu-controller', onClick: function onClick() {
 
-	          store.dispatch(changeDisplay('home'));
+	          store.dispatch(changeMenuDisplay(!store.getState().menuDisplayed));
 	        } },
-	      '$ Home'
+	      menu == true ? _react2.default.createElement('i', { className: 'fa fa-times', 'aria-hidden': 'true' }) : _react2.default.createElement('i', { className: 'fa fa-bars', 'aria-hidden': 'true' })
 	    ),
 	    _react2.default.createElement(
-	      'p',
-	      { className: 'menuitem', onClick: function onClick() {
-
-	          store.dispatch(changeDisplay('work'));
-	        } },
-	      '$ Work'
-	    ),
-	    _react2.default.createElement(
-	      'p',
-	      { className: 'menuitem', onClick: function onClick() {
-
-	          store.dispatch(changeDisplay('contact'));
-	        } },
-	      '$ Contact Me',
+	      'div',
+	      { id: menu == true ? "menu-on" : "menu" },
+	      _react2.default.createElement('img', { className: 'header-image', src: 'steve.png', width: '150' }),
 	      _react2.default.createElement(
-	        'span',
-	        { id: 'blink' },
-	        ' _'
+	        'p',
+	        { className: 'label-text' },
+	        'Steve Banton'
+	      ),
+	      _react2.default.createElement(
+	        'p',
+	        { className: 'label-text' },
+	        'Full Stack Web & Mobile Developer'
+	      ),
+	      _react2.default.createElement('p', { className: 'spacer' }),
+	      _react2.default.createElement(
+	        'p',
+	        { className: 'menuitem', onClick: function onClick() {
+
+	            store.dispatch(changeDisplay('home'));
+	          } },
+	        '$ Home'
+	      ),
+	      _react2.default.createElement(
+	        'p',
+	        { className: 'menuitem', onClick: function onClick() {
+
+	            store.dispatch(changeDisplay('work'));
+	          } },
+	        '$ Work'
+	      ),
+	      _react2.default.createElement(
+	        'p',
+	        { className: 'menuitem', onClick: function onClick() {
+
+	            store.dispatch(changeDisplay('contact'));
+	          } },
+	        '$ Contact Me',
+	        _react2.default.createElement(
+	          'span',
+	          { id: 'blink' },
+	          ' _'
+	        )
+	      ),
+	      _react2.default.createElement('br', null),
+	      _react2.default.createElement('div', { id: 'chart3' }),
+	      _react2.default.createElement(
+	        'p',
+	        { className: 'created-with' },
+	        'Created with [',
+	        _react2.default.createElement('br', null),
+	        '\xA0\xA0\'React\', ',
+	        _react2.default.createElement('br', null),
+	        '\xA0\xA0\'Redux\', ',
+	        _react2.default.createElement('br', null),
+	        '\xA0\xA0\'D3\', ',
+	        _react2.default.createElement('br', null),
+	        '\xA0\xA0\'',
+	        _react2.default.createElement('i', { className: 'fa fa-coffee' }),
+	        '\', ',
+	        _react2.default.createElement('br', null),
+	        '\xA0\xA0\'',
+	        _react2.default.createElement('i', { className: 'fa fa-heart' }),
+	        ' for Terminal\'',
+	        _react2.default.createElement('br', null),
+	        ']'
 	      )
-	    ),
-	    _react2.default.createElement('br', null),
-	    _react2.default.createElement('div', { id: 'chart3' }),
-	    _react2.default.createElement(
-	      'p',
-	      { className: 'created-with' },
-	      'Created with [',
-	      _react2.default.createElement('br', null),
-	      '\xA0\xA0\'React\', ',
-	      _react2.default.createElement('br', null),
-	      '\xA0\xA0\'Redux\', ',
-	      _react2.default.createElement('br', null),
-	      '\xA0\xA0\'D3\', ',
-	      _react2.default.createElement('br', null),
-	      '\xA0\xA0\'',
-	      _react2.default.createElement('i', { className: 'fa fa-coffee' }),
-	      '\', ',
-	      _react2.default.createElement('br', null),
-	      '\xA0\xA0\'',
-	      _react2.default.createElement('i', { className: 'fa fa-heart' }),
-	      ' for Terminal\'',
-	      _react2.default.createElement('br', null),
-	      ']'
 	    )
 	  );
 	};
 
-	var View = function View(_ref5) {
-	  var current = _ref5.current;
+	var View = function View(_ref6) {
+	  var current = _ref6.current;
 
 
 	  var details = {};
@@ -542,7 +582,8 @@
 	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
 	    _this.state = {
-	      current: initialState.current
+	      current: initialState.current,
+	      menuDisplayed: initialState.menuDisplayed
 	    };
 	    _this.storeChange = _this.storeChange.bind(_this);
 	    return _this;
@@ -554,7 +595,8 @@
 	    key: 'storeChange',
 	    value: function storeChange() {
 	      this.setState({
-	        current: store.getState().current
+	        current: store.getState().current,
+	        menuDisplayed: store.getState().menuDisplayed
 	      });
 	      //console.log(store.getState())
 	      //console.log(JSON.stringify(this.state))
@@ -565,7 +607,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'app' },
-	        _react2.default.createElement(Menu, null),
+	        _react2.default.createElement(Menu, { menu: this.state.menuDisplayed }),
 	        _react2.default.createElement(View, { current: this.state.current })
 	      );
 	    }
@@ -22380,7 +22422,7 @@
 
 
 	// module
-	exports.push([module.id, "body {\n  padding: 0;\n  margin: 0;\n  background-color: black;\n  font-family: Lucida Console, Monaco, monospace;\n  overflow-x: hidden; }\n\n#react-container {\n  margin: 0;\n  padding: 0;\n  color: white; }\n  #react-container h1 {\n    font-family: inherit;\n    font-size: 45px;\n    font-style: bold;\n    margin: 0;\n    padding-left: 4vw;\n    padding-bottom: 30px; }\n  #react-container h2 {\n    font-family: inherit;\n    font-weight: 100;\n    font-size: 30px;\n    padding-bottom: 30px;\n    padding-left: 4vw; }\n\n#techtable {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap;\n  -webkit-box-align: start;\n      -ms-flex-align: start;\n          align-items: flex-start;\n  padding: 0 3vw 30px 3vw; }\n\n#techtable > * {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 0 auto;\n          flex: 1 0 auto;\n  min-width: 200px; }\n\n#sub-note {\n  font-size: 8px; }\n\n.header-text {\n  padding: 10px;\n  margin: 10px;\n  background-color: #20C20E;\n  color: white;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.skill {\n  padding: 10px;\n  margin: 10px;\n  background-color: white;\n  color: black;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.app {\n  width: 100vw;\n  height: 100vh;\n  padding: 0;\n  margin: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap; }\n\n#menu {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 1 auto;\n          flex: 0 1 auto;\n  margin: 0;\n  width: 350px;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 1; }\n\n#view {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 1 auto;\n          flex: 1 1 auto;\n  width: 500px;\n  margin: 0;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 0; }\n\n.submit-button {\n  border: 0px;\n  background-color: white;\n  color: black;\n  padding: 8px;\n  margin: 16px;\n  cursor: pointer; }\n  .submit-button:active {\n    background-color: #1976D2; }\n\n.menuitem {\n  width: 200px;\n  cursor: pointer;\n  background-color: white;\n  color: black;\n  display: block;\n  padding: 10px;\n  margin: 10px auto 10px auto; }\n  .menuitem:hover {\n    text-decoration: underline; }\n\n.header-image {\n  border-radius: 100px;\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n  display: block;\n  margin: 0 auto 0 auto;\n  -ms-interpolation-mode: nearest-neighbor;\n      image-rendering: -webkit-optimize-contrast;\n      image-rendering: -moz-crisp-edges;\n      image-rendering: pixelated; }\n\n.label-text {\n  font-size: 10px;\n  text-align: center; }\n\n.created-with {\n  padding-left: 77px;\n  font-size: 10px;\n  font-align: left; }\n\n.spacer {\n  margin-top: 40px; }\n\n.icons {\n  fill: white; }\n\n#chart3 {\n  width: 300px;\n  margin: 0 auto 30px auto; }\n\n#blink {\n  opacity: 0;\n  -webkit-animation: cursor 1s infinite;\n          animation: cursor 1s infinite; }\n\n#highlight {\n  background-color: #20C20E; }\n\n@-webkit-keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n.icons {\n  cursor: pointer; }\n", ""]);
+	exports.push([module.id, "body {\n  padding: 0;\n  margin: 0;\n  background-color: black;\n  font-family: Lucida Console, Monaco, monospace;\n  overflow-x: hidden; }\n\n#react-container {\n  margin: 0;\n  padding: 0;\n  color: white; }\n  #react-container h1 {\n    font-family: inherit;\n    font-size: 45px;\n    font-style: bold;\n    margin: 0;\n    padding-left: 4vw;\n    padding-bottom: 30px; }\n  #react-container h2 {\n    font-family: inherit;\n    font-weight: 100;\n    font-size: 30px;\n    padding-bottom: 30px;\n    padding-left: 4vw; }\n\n#techtable {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap;\n  -webkit-box-align: start;\n      -ms-flex-align: start;\n          align-items: flex-start;\n  padding: 0 3vw 30px 3vw; }\n\n#techtable > * {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 0 auto;\n          flex: 1 0 auto;\n  min-width: 200px; }\n\n#sub-note {\n  font-size: 8px; }\n\n.header-text {\n  padding: 10px;\n  margin: 10px;\n  background-color: #20C20E;\n  color: white;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.skill {\n  padding: 10px;\n  margin: 10px;\n  background-color: white;\n  color: black;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.app {\n  width: 100vw;\n  height: 100vh;\n  padding: 0;\n  margin: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap; }\n\n#menu {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 1 auto;\n          flex: 0 1 auto;\n  margin: 0;\n  width: 350px;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 1; }\n\n#menu-on {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 1 auto;\n          flex: 0 1 auto;\n  margin: 0;\n  width: 350px;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 1; }\n\n#menu-controller {\n  display: none; }\n\n#view {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 1 auto;\n          flex: 1 1 auto;\n  width: 300px;\n  margin: 0;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 0; }\n\n.submit-button {\n  border: 0px;\n  background-color: white;\n  color: black;\n  padding: 8px;\n  margin: 16px;\n  cursor: pointer; }\n  .submit-button:active {\n    background-color: #1976D2; }\n\n.menuitem {\n  width: 200px;\n  cursor: pointer;\n  background-color: white;\n  color: black;\n  display: block;\n  padding: 10px;\n  margin: 10px auto 10px auto; }\n  .menuitem:hover {\n    text-decoration: underline; }\n\n.header-image {\n  border-radius: 100px;\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n  display: block;\n  margin: 0 auto 0 auto;\n  -ms-interpolation-mode: nearest-neighbor;\n      image-rendering: -webkit-optimize-contrast;\n      image-rendering: -moz-crisp-edges;\n      image-rendering: pixelated; }\n\n.label-text {\n  font-size: 10px;\n  text-align: center; }\n\n.created-with {\n  padding-left: 77px;\n  font-size: 10px;\n  font-align: left; }\n\n.spacer {\n  margin-top: 40px; }\n\n.icons {\n  fill: white; }\n\n#chart3 {\n  width: 300px;\n  margin: 0 auto 30px auto; }\n\n#blink {\n  opacity: 0;\n  -webkit-animation: cursor 1s infinite;\n          animation: cursor 1s infinite; }\n\n#highlight {\n  background-color: #20C20E; }\n\n@-webkit-keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n.icons {\n  cursor: pointer; }\n\n/* Small Device Rendering */\n@media screen and (max-width: 850px) {\n  #menu {\n    position: absolute;\n    width: 100vw;\n    opacity: 0;\n    z-index: -1; }\n  #menu-on {\n    position: absolute;\n    width: 100vw;\n    opacity: 1;\n    z-index: 2;\n    left: 0;\n    background-color: rgba(0, 0, 0, 0.9);\n    -webkit-animation: menu-in 0.5s;\n            animation: menu-in 0.5s; }\n  #menu-controller {\n    z-index: 2;\n    font-size: 25px;\n    display: block;\n    padding: 20px;\n    width: 100vw; }\n  @-webkit-keyframes menu-in {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 100; } }\n  @keyframes menu-in {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 100; } }\n  @-webkit-keyframes menu-out {\n    0% {\n      left: 0; }\n    100% {\n      left: -100vw; } }\n  @keyframes menu-out {\n    0% {\n      left: 0; }\n    100% {\n      left: -100vw; } } }\n", ""]);
 
 	// exports
 

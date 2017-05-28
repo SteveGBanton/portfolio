@@ -189,17 +189,19 @@ const forceLayout = () => {
 
 const defaultData = {
   current: 'home', //second field: editing on or off
+  menuDisplayed: false
 }
 
-const initialState = (localStorage['sb_recipe_state']) ? JSON.parse(localStorage['sb_recipe_state']) : defaultData;
+const initialState = defaultData;
 
 
 //==============================//
-//Actions List
+//Constants / Actions List
 //==============================//
 
 const C = {
   SCREEN_DISPLAYED: 'SCREEN_DISPLAYED',
+  MENU_DISPLAYED: 'MENU_DISPLAYED'
 }
 
 //==============================//
@@ -216,11 +218,24 @@ const current = (state=['home'], action) => {
 
 }
 
+const menuDisplayed = (state=[false], action) => {
+
+  if (action.type === C.MENU_DISPLAYED) {
+    return action.payload
+  } else if (action.type === C.SCREEN_DISPLAYED) {
+    return false
+  } else {
+    return state
+  }
+
+}
+
 
 //Combine all reducers to appReducer
 
 const appReducer = combineReducers({
-  current
+  current,
+  menuDisplayed
 })
 
 
@@ -245,6 +260,16 @@ const changeDisplay = (displayed) => {
       payload: displayed
   }
 }
+
+const changeMenuDisplay = (toggle) => {
+
+  return {
+      type: C.MENU_DISPLAYED,
+      payload: toggle
+  }
+}
+
+
 
 //==============================//
 //REACT COMPONENTS
@@ -302,7 +327,6 @@ const Services = ({  }) => {
 		)
 }
 
-
 const Work = ({  }) => {
 
 		return (
@@ -310,11 +334,9 @@ const Work = ({  }) => {
 
         <h1>Work</h1>
 
-        
       </div>
 		)
 }
-
 
 const Contact = ({  }) => {
 
@@ -328,57 +350,70 @@ const Contact = ({  }) => {
 
     </div>
   )
-
 }
 
 //Major Windows, Called From Parent
 
-const Menu = () => {
+const Menu = ( { menu } ) => {
 
 		return (
-			<div id="menu">
+      <div id="menu-container">
 
-        <img className='header-image' src='steve.png' width='150' />
-
-        <p className='label-text'>Steve Banton</p>
-        <p className='label-text'>Full Stack Web & Mobile Developer</p>
-
-        <p className='spacer'></p>
-
-        <p className='menuitem' onClick={() => {
+        <div id="menu-controller" onClick={() => {
 
         store.dispatch(
-          changeDisplay('home')
+          changeMenuDisplay(!(store.getState().menuDisplayed))
           )
 
-        }}>$ Home</p>
+        }}>
 
-        <p className='menuitem' onClick={() => {
+        {menu==true?<i className="fa fa-times" aria-hidden="true"></i>:<i className="fa fa-bars" aria-hidden="true"></i>}
+        </div>
 
-        store.dispatch(
-          changeDisplay('work')
-          )
+  			<div id={menu == true ? "menu-on" : "menu"}>
 
-        }}>$ Work</p>
+          <img className='header-image' src='steve.png' width='150' />
 
-        <p className='menuitem' onClick={() => {
+          <p className='label-text'>Steve Banton</p>
+          <p className='label-text'>Full Stack Web & Mobile Developer</p>
 
-        store.dispatch(
-          changeDisplay('contact')
-          )
+          <p className='spacer'></p>
 
-        }}>$ Contact Me<span id='blink'> _</span></p>
-        <br />
+          <p className='menuitem' onClick={() => {
 
-        <div id="chart3"></div>
+          store.dispatch(
+            changeDisplay('home')
+            )
+
+          }}>$ Home</p>
+
+          <p className='menuitem' onClick={() => {
+
+          store.dispatch(
+            changeDisplay('work')
+            )
+
+          }}>$ Work</p>
+
+          <p className='menuitem' onClick={() => {
+
+          store.dispatch(
+            changeDisplay('contact')
+            )
+
+          }}>$ Contact Me<span id='blink'> _</span></p>
+          <br />
+
+          <div id="chart3"></div>
 
 
 
-        <p className='created-with'>Created with [<br/>&nbsp;&nbsp;'React', <br/>&nbsp;&nbsp;'Redux', <br/>&nbsp;&nbsp;'D3', <br/>&nbsp;&nbsp;'<i className="fa fa-coffee"></i>', <br/>&nbsp;&nbsp;'<i className="fa fa-heart"></i> for Terminal'<br/>]</p>
+          <p className='created-with'>Created with [<br/>&nbsp;&nbsp;'React', <br/>&nbsp;&nbsp;'Redux', <br/>&nbsp;&nbsp;'D3', <br/>&nbsp;&nbsp;'<i className="fa fa-coffee"></i>', <br/>&nbsp;&nbsp;'<i className="fa fa-heart"></i> for Terminal'<br/>]</p>
 
 
 
         </div>
+      </div>
 		)
 }
 
@@ -419,6 +454,7 @@ class App extends Component {
     super(props)
     this.state = {
       current: initialState.current,
+      menuDisplayed: initialState.menuDisplayed
     }
     this.storeChange = this.storeChange.bind(this)
   }
@@ -427,7 +463,8 @@ class App extends Component {
 
  storeChange () {
    this.setState({
-     current: store.getState().current
+     current: store.getState().current,
+     menuDisplayed: store.getState().menuDisplayed
    })
    //console.log(store.getState())
    //console.log(JSON.stringify(this.state))
@@ -436,7 +473,7 @@ class App extends Component {
  render() {
     return (
       <div className="app">
-        <Menu />
+        <Menu menu={this.state.menuDisplayed}/>
         <View current={this.state.current} />
       </div>
     )
