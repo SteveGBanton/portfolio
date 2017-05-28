@@ -457,14 +457,26 @@
 	  var menu = _ref5.menu;
 
 
+	  var fadeOn = function fadeOn() {
+
+	    document.getElementById('view').className = "faded";
+	  };
+
+	  var fadeOff = function fadeOff() {
+
+	    document.getElementById('view').className = " ";
+	  };
+
 	  return _react2.default.createElement(
 	    'div',
 	    { id: 'menu-container' },
+	    menu == true ? fadeOn() : '',
 	    _react2.default.createElement(
 	      'div',
 	      { id: 'menu-controller', onClick: function onClick() {
 
 	          store.dispatch(changeMenuDisplay(!store.getState().menuDisplayed));
+	          fadeOff();
 	        } },
 	      menu == true ? _react2.default.createElement('i', { className: 'fa fa-times', 'aria-hidden': 'true' }) : _react2.default.createElement('i', { className: 'fa fa-bars', 'aria-hidden': 'true' })
 	    ),
@@ -488,6 +500,7 @@
 	        { className: 'menuitem', onClick: function onClick() {
 
 	            store.dispatch(changeDisplay('home'));
+	            fadeOff();
 	          } },
 	        '$ Home'
 	      ),
@@ -496,6 +509,7 @@
 	        { className: 'menuitem', onClick: function onClick() {
 
 	            store.dispatch(changeDisplay('work'));
+	            fadeOff();
 	          } },
 	        '$ Work'
 	      ),
@@ -504,6 +518,7 @@
 	        { className: 'menuitem', onClick: function onClick() {
 
 	            store.dispatch(changeDisplay('contact'));
+	            fadeOff();
 	          } },
 	        '$ Contact Me',
 	        _react2.default.createElement(
@@ -22422,7 +22437,7 @@
 
 
 	// module
-	exports.push([module.id, "body {\n  padding: 0;\n  margin: 0;\n  background-color: black;\n  font-family: Lucida Console, Monaco, monospace;\n  overflow-x: hidden; }\n\n#react-container {\n  margin: 0;\n  padding: 0;\n  color: white; }\n  #react-container h1 {\n    font-family: inherit;\n    font-size: 45px;\n    font-style: bold;\n    margin: 0;\n    padding-left: 4vw;\n    padding-bottom: 30px; }\n  #react-container h2 {\n    font-family: inherit;\n    font-weight: 100;\n    font-size: 30px;\n    padding-bottom: 30px;\n    padding-left: 4vw; }\n\n#techtable {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap;\n  -webkit-box-align: start;\n      -ms-flex-align: start;\n          align-items: flex-start;\n  padding: 0 3vw 30px 3vw; }\n\n#techtable > * {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 0 auto;\n          flex: 1 0 auto;\n  min-width: 200px; }\n\n#sub-note {\n  font-size: 8px; }\n\n.header-text {\n  padding: 10px;\n  margin: 10px;\n  background-color: #20C20E;\n  color: white;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.skill {\n  padding: 10px;\n  margin: 10px;\n  background-color: white;\n  color: black;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.app {\n  width: 100vw;\n  height: 100vh;\n  padding: 0;\n  margin: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap; }\n\n#menu {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 1 auto;\n          flex: 0 1 auto;\n  margin: 0;\n  width: 350px;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 1; }\n\n#menu-on {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 1 auto;\n          flex: 0 1 auto;\n  margin: 0;\n  width: 350px;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 1; }\n\n#menu-controller {\n  display: none; }\n\n#view {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 1 auto;\n          flex: 1 1 auto;\n  width: 300px;\n  margin: 0;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 0; }\n\n.submit-button {\n  border: 0px;\n  background-color: white;\n  color: black;\n  padding: 8px;\n  margin: 16px;\n  cursor: pointer; }\n  .submit-button:active {\n    background-color: #1976D2; }\n\n.menuitem {\n  width: 200px;\n  cursor: pointer;\n  background-color: white;\n  color: black;\n  display: block;\n  padding: 10px;\n  margin: 10px auto 10px auto; }\n  .menuitem:hover {\n    text-decoration: underline; }\n\n.header-image {\n  border-radius: 100px;\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n  display: block;\n  margin: 0 auto 0 auto;\n  -ms-interpolation-mode: nearest-neighbor;\n      image-rendering: -webkit-optimize-contrast;\n      image-rendering: -moz-crisp-edges;\n      image-rendering: pixelated; }\n\n.label-text {\n  font-size: 10px;\n  text-align: center; }\n\n.created-with {\n  padding-left: 77px;\n  font-size: 10px;\n  font-align: left; }\n\n.spacer {\n  margin-top: 40px; }\n\n.icons {\n  fill: white; }\n\n#chart3 {\n  width: 300px;\n  margin: 0 auto 30px auto; }\n\n#blink {\n  opacity: 0;\n  -webkit-animation: cursor 1s infinite;\n          animation: cursor 1s infinite; }\n\n#highlight {\n  background-color: #20C20E; }\n\n@-webkit-keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n.icons {\n  cursor: pointer; }\n\n/* Small Device Rendering */\n@media screen and (max-width: 850px) {\n  #menu {\n    position: absolute;\n    width: 100vw;\n    opacity: 0;\n    z-index: -1; }\n  #menu-on {\n    position: absolute;\n    width: 100vw;\n    opacity: 1;\n    z-index: 2;\n    left: 0;\n    background-color: rgba(0, 0, 0, 0.9);\n    -webkit-animation: menu-in 0.5s;\n            animation: menu-in 0.5s; }\n  #menu-controller {\n    z-index: 2;\n    font-size: 25px;\n    display: block;\n    padding: 20px;\n    width: 100vw; }\n  @-webkit-keyframes menu-in {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 100; } }\n  @keyframes menu-in {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 100; } }\n  @-webkit-keyframes menu-out {\n    0% {\n      left: 0; }\n    100% {\n      left: -100vw; } }\n  @keyframes menu-out {\n    0% {\n      left: 0; }\n    100% {\n      left: -100vw; } } }\n", ""]);
+	exports.push([module.id, "body {\n  padding: 0;\n  margin: 0;\n  background-color: black;\n  font-family: Lucida Console, Monaco, monospace;\n  overflow-x: hidden; }\n\n#react-container {\n  margin: 0;\n  padding: 0;\n  color: white; }\n  #react-container h1 {\n    font-family: inherit;\n    font-size: 45px;\n    font-style: bold;\n    margin: 0;\n    padding-left: 4vw;\n    padding-bottom: 30px; }\n  #react-container h2 {\n    font-family: inherit;\n    font-weight: 100;\n    font-size: 30px;\n    padding-bottom: 30px;\n    padding-left: 4vw; }\n\n#techtable {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap;\n  -webkit-box-align: start;\n      -ms-flex-align: start;\n          align-items: flex-start;\n  padding: 0 3vw 30px 3vw; }\n\n#techtable > * {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 0 auto;\n          flex: 1 0 auto;\n  min-width: 200px; }\n\n#sub-note {\n  font-size: 8px; }\n\n.header-text {\n  padding: 10px;\n  margin: 10px;\n  background-color: #20C20E;\n  color: white;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.skill {\n  padding: 10px;\n  margin: 10px;\n  background-color: white;\n  color: black;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.faded {\n  opacity: 1; }\n\n.app {\n  width: 100vw;\n  height: 100vh;\n  padding: 0;\n  margin: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap; }\n\n#menu {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 1 auto;\n          flex: 0 1 auto;\n  margin: 0;\n  width: 350px;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 1; }\n\n#menu-on {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 1 auto;\n          flex: 0 1 auto;\n  margin: 0;\n  width: 350px;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 1; }\n\n#menu-controller {\n  display: none; }\n\n#view {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 1 auto;\n          flex: 1 1 auto;\n  width: 300px;\n  margin: 0;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 0; }\n\n.submit-button {\n  border: 0px;\n  background-color: white;\n  color: black;\n  padding: 8px;\n  margin: 16px;\n  cursor: pointer; }\n  .submit-button:active {\n    background-color: #1976D2; }\n\n.menuitem {\n  width: 200px;\n  cursor: pointer;\n  background-color: white;\n  color: black;\n  display: block;\n  padding: 10px;\n  margin: 10px auto 10px auto; }\n  .menuitem:hover {\n    text-decoration: underline; }\n\n.header-image {\n  border-radius: 100px;\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n  display: block;\n  margin: 0 auto 0 auto;\n  -ms-interpolation-mode: nearest-neighbor;\n      image-rendering: -webkit-optimize-contrast;\n      image-rendering: -moz-crisp-edges;\n      image-rendering: pixelated; }\n\n.label-text {\n  font-size: 10px;\n  text-align: center; }\n\n.created-with {\n  padding-left: 77px;\n  font-size: 10px;\n  font-align: left; }\n\n.spacer {\n  margin-top: 40px; }\n\n.icons {\n  fill: white; }\n\n#chart3 {\n  width: 300px;\n  margin: 0 auto 30px auto; }\n\n#blink {\n  opacity: 0;\n  -webkit-animation: cursor 1s infinite;\n          animation: cursor 1s infinite; }\n\n#highlight {\n  background-color: #20C20E; }\n\n@-webkit-keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n.icons {\n  cursor: pointer; }\n\n/* Small Device Rendering */\n@media screen and (max-width: 850px) {\n  #menu {\n    position: absolute;\n    width: 100vw;\n    opacity: 0;\n    z-index: -1; }\n  .faded {\n    opacity: 0.1; }\n  #menu-on {\n    position: absolute;\n    width: 100vw;\n    opacity: 1;\n    z-index: 2;\n    left: 0;\n    background-color: rgba(0, 0, 0, 0.9);\n    -webkit-animation: menu-in 0.5s;\n            animation: menu-in 0.5s; }\n  #menu-controller {\n    z-index: 2;\n    font-size: 25px;\n    display: block;\n    padding: 20px;\n    width: 100vw; }\n  @-webkit-keyframes menu-in {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 100; } }\n  @keyframes menu-in {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 100; } }\n  @-webkit-keyframes menu-out {\n    0% {\n      left: 0; }\n    100% {\n      left: -100vw; } }\n  @keyframes menu-out {\n    0% {\n      left: 0; }\n    100% {\n      left: -100vw; } } }\n", ""]);
 
 	// exports
 

@@ -356,14 +356,29 @@ const Contact = ({  }) => {
 
 const Menu = ( { menu } ) => {
 
+    const fadeOn = () => {
+
+      document.getElementById('view').className = "faded"
+
+    }
+
+    const fadeOff = () => {
+
+      document.getElementById('view').className = " "
+
+    }
+
 		return (
+
       <div id="menu-container">
+        {menu == true ? fadeOn() : ''}
 
         <div id="menu-controller" onClick={() => {
 
         store.dispatch(
           changeMenuDisplay(!(store.getState().menuDisplayed))
-          )
+        );
+        fadeOff()
 
         }}>
 
@@ -383,7 +398,8 @@ const Menu = ( { menu } ) => {
 
           store.dispatch(
             changeDisplay('home')
-            )
+          );
+          fadeOff()
 
           }}>$ Home</p>
 
@@ -391,7 +407,8 @@ const Menu = ( { menu } ) => {
 
           store.dispatch(
             changeDisplay('work')
-            )
+          );
+          fadeOff()
 
           }}>$ Work</p>
 
@@ -399,7 +416,8 @@ const Menu = ( { menu } ) => {
 
           store.dispatch(
             changeDisplay('contact')
-            )
+          );
+          fadeOff()
 
           }}>$ Contact Me<span id='blink'> _</span></p>
           <br />
