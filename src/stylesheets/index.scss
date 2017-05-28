@@ -1,9 +1,5 @@
-@import url(https://fonts.googleapis.com/css?family=Condiment);
 
-
-//-----------
-//Viewport Adjustments
-//-----------
+$green: #20C20E;
 
 //-----------
 //Main CSS
@@ -22,19 +18,55 @@ body {
   padding: 0;
   color: white;
   h1 {
-    font-family: 'Condiment';
-    font-weight: 100;
-    font-size: 75px;
+    font-family: inherit;
+    font-size: 45px;
     font-style: bold;
     margin: 0;
-    padding: 0;
+    padding-left: 4vw;
+    padding-bottom: 30px;
   }
   h2 {
-    font-family: 'Condiment';
+    font-family: inherit;
     font-weight: 100;
     font-size: 30px;
-    margin-bottom: 20px;
+    padding-bottom: 30px;
+    padding-left: 4vw;
   }
+
+}
+
+#techtable {
+  display:flex;
+  justify-content: center;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  padding: 0 3vw 30px 3vw;
+
+}
+
+#techtable > * {
+  flex: 1 0 auto;
+  min-width: 200px;
+}
+
+#sub-note {
+  font-size: 8px;
+}
+
+.header-text {
+  padding: 10px;
+  margin: 10px;
+  background-color: $green;
+  color: white;
+  box-shadow: 0 3px 6px rgba(255,255,255,0.40), 0 3px 6px rgba(255,255,255,0.60);
+}
+
+.skill {
+  padding: 10px;
+  margin: 10px;
+  background-color: white;
+  color: black;
+  box-shadow: 0 3px 6px rgba(255,255,255,0.40), 0 3px 6px rgba(255,255,255,0.60);
 }
 
 .app {
@@ -45,7 +77,6 @@ body {
   display: flex;
   flex-flow: row wrap;
 }
-
 
 #menu {
   flex: 0 1 auto;
@@ -133,6 +164,10 @@ body {
 	animation: cursor 1s infinite;
 }
 
+#highlight {
+  background-color: $green;
+}
+
 @keyframes cursor {
 	0% {
 		opacity: 0;
@@ -155,3 +190,9 @@ body {
 .icons {
   cursor: pointer;
 }
+
+
+
+//-----------
+//Viewport Adjustments
+//-----------

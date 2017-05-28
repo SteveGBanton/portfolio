@@ -65,8 +65,6 @@ const forceLayout = () => {
           }
       ]
 
-
-
       var myChart = d3.select("#chart3")
           .append('svg')
           .attr('width', width)
@@ -80,9 +78,7 @@ const forceLayout = () => {
           .force("collide", d3.forceCollide(20))
           .force('charge', d3.forceManyBody().strength(-100))
           .force("center", d3.forceCenter(width / 2, height / 2))
-          .force("y", d3.forceY(height / 2))
-          .force("x", d3.forceX(width / 2))
-
+          .alpha(0.1)
 
       //add links
       var link = myChart.selectAll('line')
@@ -257,35 +253,43 @@ const changeDisplay = (displayed) => {
 const Home = ({  }) => {
 
   return (
-    <div id='home' className='display'>
+    <div id='about' className='display'>
 
-      <h1>Home</h1>
+      <h1>Hi, Im <span id='highlight'>Steve Banton</span>.
 
+      I build JavaScript applications for desktop and mobile.</h1>
+
+      <h2>Technologies I work with:</h2>
+
+      <div id='techtable'>
+        <div className='header'>
+          <div className='header-text'>Front-End:</div>
+          <div className='skill'>React.js / Redux</div>
+          <div className='skill'>React Native<span id='sub-note'><br/>iOS / Android Development</span></div>
+          <div className='skill'>D3.js</div>
+          <div className='skill'>jQuery</div>
+          <div className='skill'>CSS / SCSS</div>
+          <div className='skill'>HTML</div>
+        </div>
+        <div className='header'>
+          <div className='header-text'>Back-End:</div>
+          <div className='skill'>Node.js</div>
+          <div className='skill'>Express.js</div>
+          <div className='skill'>MongoDB</div>
+        </div>
+
+        <div className='header'>
+          <div className='header-text'>More:</div>
+          <div className='skill'>NPM</div>
+          <div className='skill'>Git</div>
+          <div className='skill'>Webpack</div>
+          <div className='skill'>Babel</div>
+        </div>
+      </div>
     </div>
   )
 }
 
-const About = ({  }) => {
-
-		return (
-			<div id='about' className='display'>
-
-        <h1>Hi, Im Steve Banton.
-
-        I build full stack javascript applications for desktop and mobile.</h1>
-
-        <h2>Technologies I work with:</h2>
-
-        <div>Front-End</div>
-        <div>Data Visualization</div>
-        <div>Back-End</div>
-
-
-
-
-      </div>
-		)
-}
 
 const Services = ({  }) => {
 
@@ -306,16 +310,7 @@ const Work = ({  }) => {
 
         <h1>Work</h1>
 
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse molestie aliquam velit id fermentum. Duis elit odio, fringilla vel porta non, ultricies id nunc. Morbi tristique dolor magna, vitae dictum massa rutrum non. Etiam rhoncus dictum nibh, id porta nunc varius tristique. Etiam arcu arcu, dictum ac cursus sed, sollicitudin in elit. Nam pretium aliquam arcu. Nunc semper dui iaculis blandit aliquet. Mauris faucibus, ligula sit amet maximus gravida, elit justo imperdiet augue, quis egestas velit velit id sem. Sed id semper libero. Nunc semper id metus vitae pharetra. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mi ipsum, tempor non accumsan id, tristique non neque.</p>
-
-<p>Donec felis risus, condimentum sit amet risus ut, commodo lacinia mauris. Integer ut sollicitudin metus, in accumsan nisi. Praesent id odio ultricies, placerat ipsum a, aliquet velit. Vivamus ultricies pretium velit, a tempor nulla interdum eget. Nulla sapien urna, accumsan ac molestie sit amet, scelerisque non sapien. Curabitur nisl nisl, sodales tempus accumsan eget, rutrum luctus erat. Aenean vel libero ultrices, laoreet ante vel, tempor dolor. Aliquam bibendum quam leo, eu porttitor nisi bibendum sit amet. Nulla condimentum sem ac nisi euismod tempus. Sed lacus tortor, eleifend et ultricies at, mollis et ligula. Sed suscipit, risus at semper maximus, odio mi varius tellus, non laoreet justo leo ut erat. Donec imperdiet hendrerit urna sed sagittis. Curabitur bibendum consectetur enim, sit amet luctus neque venenatis quis. Integer ac magna consectetur, efficitur sem vitae, tempor enim. Quisque metus lacus, mattis quis diam eu, ultrices mollis tellus. Sed dictum nec nisi vitae convallis.</p>
-
-<p>Vestibulum egestas rhoncus facilisis. Morbi quis ipsum sed nunc luctus tincidunt. Duis vel purus sapien. Maecenas ultrices sit amet eros quis vestibulum. Sed euismod enim in ipsum hendrerit tristique. Suspendisse feugiat consectetur enim, ac suscipit risus blandit ac. Cras aliquet dictum elit, sit amet porta erat condimentum vel. Pellentesque nulla nisl, sollicitudin ut urna vitae, rhoncus vulputate dui. Mauris et gravida mi. Duis lacinia facilisis neque in vestibulum.</p>
-
-<p>Nunc rutrum at justo a dapibus. Phasellus consectetur libero sit amet elit varius faucibus. Mauris vel ultricies enim. Praesent in laoreet quam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vitae leo pellentesque, porttitor quam sed, condimentum turpis. Maecenas efficitur velit sit amet ex vehicula elementum. Mauris consequat maximus risus vitae tempus. Vivamus vitae diam elit. Donec efficitur egestas molestie. Nunc lobortis eget leo a commodo. Nullam sem nunc, aliquet ac mattis maximus, suscipit quis massa. Vestibulum mollis dictum justo vitae mollis. Nunc mollis ornare tortor, id volutpat est aliquam vitae. Praesent pretium sapien quis lectus pellentesque efficitur. Maecenas semper lorem et ipsum semper fringilla.</p>
-
-<p>Mauris a velit eget lectus bibendum mollis. Nulla maximus molestie nunc eget cursus. Morbi semper, dolor ut ultrices dapibus, purus mi vehicula leo, vitae semper urna sem eget quam. Suspendisse nec pharetra augue, imperdiet vulputate quam. Nunc tristique condimentum facilisis. Nunc turpis lacus, pretium nec convallis ut, auctor sed enim. Sed id hendrerit risus.</p>
-
+        
       </div>
 		)
 }

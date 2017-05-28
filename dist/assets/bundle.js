@@ -78,109 +78,109 @@
 
 	var forceLayout = function forceLayout() {
 
-	    var width = 300,
-	        height = 150,
-	        circleWidth = 10,
-	        tooltip = d3.select('body').append('div').style('background', 'white').style('font-size', '10px').style('line-height', '100%').style('position', 'absolute').style('padding', '5px').style('border-radius', '3px').style('opacity', '0').style('z-index', '2');
+	  var width = 300,
+	      height = 150,
+	      circleWidth = 10,
+	      tooltip = d3.select('body').append('div').style('background', 'white').style('font-size', '10px').style('line-height', '100%').style('position', 'absolute').style('padding', '5px').style('border-radius', '3px').style('opacity', '0').style('z-index', '2');
 
-	    var nodes = [{
-	        "title": "Email",
-	        "code": '\uF0E0',
-	        "link": "mailto:contact@stevebanton.com"
-	    }, {
-	        "title": "Github",
-	        "code": '\uF09B',
-	        "link": "http://github.com"
-	    }, {
-	        "title": "Facebook",
-	        "code": '\uF230',
-	        "link": "http://facebook.com"
-	    }, {
-	        "title": "Twitter",
-	        "code": '\uF099',
-	        "link": "http://twitter.com"
-	    }];
+	  var nodes = [{
+	    "title": "Email",
+	    "code": '\uF0E0',
+	    "link": "mailto:contact@stevebanton.com"
+	  }, {
+	    "title": "Github",
+	    "code": '\uF09B',
+	    "link": "http://github.com"
+	  }, {
+	    "title": "Facebook",
+	    "code": '\uF230',
+	    "link": "http://facebook.com"
+	  }, {
+	    "title": "Twitter",
+	    "code": '\uF099',
+	    "link": "http://twitter.com"
+	  }];
 
-	    var links = [{
-	        "target": 0,
-	        "source": 1
-	    }, {
-	        "target": 1,
-	        "source": 2
-	    }, {
-	        "target": 2,
-	        "source": 3
-	    }, {
-	        "target": 3,
-	        "source": 0
-	    }];
+	  var links = [{
+	    "target": 0,
+	    "source": 1
+	  }, {
+	    "target": 1,
+	    "source": 2
+	  }, {
+	    "target": 2,
+	    "source": 3
+	  }, {
+	    "target": 3,
+	    "source": 0
+	  }];
 
-	    var myChart = d3.select("#chart3").append('svg').attr('width', width).attr('height', height);
+	  var myChart = d3.select("#chart3").append('svg').attr('width', width).attr('height', height);
 
-	    //start simulation
-	    var simulation = d3.forceSimulation().nodes(nodes).force("link", d3.forceLink(links).distance(90)).force("collide", d3.forceCollide(20)).force('charge', d3.forceManyBody().strength(-100)).force("center", d3.forceCenter(width / 2, height / 2)).force("y", d3.forceY(height / 2)).force("x", d3.forceX(width / 2));
+	  //start simulation
+	  var simulation = d3.forceSimulation().nodes(nodes).force("link", d3.forceLink(links).distance(90)).force("collide", d3.forceCollide(20)).force('charge', d3.forceManyBody().strength(-100)).force("center", d3.forceCenter(width / 2, height / 2)).alpha(0.1);
 
-	    //add links
-	    var link = myChart.selectAll('line').data(links).enter().append('line').attr('stroke-dasharray', '2, 2').attr('stroke', 'white').attr('opacity', '0.3');
+	  //add links
+	  var link = myChart.selectAll('line').data(links).enter().append('line').attr('stroke-dasharray', '2, 2').attr('stroke', 'white').attr('opacity', '0.3');
 
-	    //add notes
-	    var node = myChart.selectAll('circle').data(nodes).enter().append('g').call(d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended));
+	  //add notes
+	  var node = myChart.selectAll('circle').data(nodes).enter().append('g').call(d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended));
 
-	    //Add icon
-	    node.append('a').attr('href', function (d) {
-	        return d.link;
-	    }).attr('target', '_blank').append('text').attr('class', 'icons').attr('font-family', 'FontAwesome').attr('font-size', '30px').attr('transform', 'translate(-20,20)').text(function (d) {
-	        return d.code;
+	  //Add icon
+	  node.append('a').attr('href', function (d) {
+	    return d.link;
+	  }).attr('target', '_blank').append('text').attr('class', 'icons').attr('font-family', 'FontAwesome').attr('font-size', '30px').attr('transform', 'translate(-20,20)').text(function (d) {
+	    return d.code;
+	  });
+
+	  //Add tooltip
+	  node.on('mouseover', function (d, i) {
+	    d3.select('text').classed('highlight', true);
+
+	    tooltip.transition().style('opacity', '1');
+	    tooltip.html(d['title']).style('left', d3.event.pageX + 8 + 'px').style('top', d3.event.pageY - 30 + 'px');
+	  }).on("mousemove", function () {
+	    return tooltip.style("top", d3.event.pageY - 30 + "px").style("left", d3.event.pageX + 8 + "px");
+	  }).on('mouseout', function (d, i) {
+	    d3.select(this).select('image').classed('highlight', false);
+
+	    tooltip.transition().style('opacity', '0');
+	  });
+
+	  //animate as simulation progresses
+	  simulation.on('tick', function (e) {
+	    node.attr('transform', function (d, i) {
+	      return 'translate(' + d.x + ', ' + d.y + ')';
 	    });
 
-	    //Add tooltip
-	    node.on('mouseover', function (d, i) {
-	        d3.select('text').classed('highlight', true);
-
-	        tooltip.transition().style('opacity', '1');
-	        tooltip.html(d['title']).style('left', d3.event.pageX + 8 + 'px').style('top', d3.event.pageY - 30 + 'px');
-	    }).on("mousemove", function () {
-	        return tooltip.style("top", d3.event.pageY - 30 + "px").style("left", d3.event.pageX + 8 + "px");
-	    }).on('mouseout', function (d, i) {
-	        d3.select(this).select('image').classed('highlight', false);
-
-	        tooltip.transition().style('opacity', '0');
+	    link.attr('x1', function (d) {
+	      return d.source.x;
+	    }).attr('y1', function (d) {
+	      return d.source.y;
+	    }).attr('x2', function (d) {
+	      return d.target.x;
+	    }).attr('y2', function (d) {
+	      return d.target.y;
 	    });
+	  });
 
-	    //animate as simulation progresses
-	    simulation.on('tick', function (e) {
-	        node.attr('transform', function (d, i) {
-	            return 'translate(' + d.x + ', ' + d.y + ')';
-	        });
+	  //dragging
+	  function dragstarted(d) {
+	    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+	    d.fx = d.x;
+	    d.fy = d.y;
+	  }
 
-	        link.attr('x1', function (d) {
-	            return d.source.x;
-	        }).attr('y1', function (d) {
-	            return d.source.y;
-	        }).attr('x2', function (d) {
-	            return d.target.x;
-	        }).attr('y2', function (d) {
-	            return d.target.y;
-	        });
-	    });
+	  function dragged(d) {
+	    d.fx = d3.event.x;
+	    d.fy = d3.event.y;
+	  }
 
-	    //dragging
-	    function dragstarted(d) {
-	        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-	        d.fx = d.x;
-	        d.fy = d.y;
-	    }
-
-	    function dragged(d) {
-	        d.fx = d3.event.x;
-	        d.fy = d3.event.y;
-	    }
-
-	    function dragended(d) {
-	        if (!d3.event.active) simulation.alphaTarget(0);
-	        d.fx = null;
-	        d.fy = null;
-	    }
+	  function dragended(d) {
+	    if (!d3.event.active) simulation.alphaTarget(0);
+	    d.fx = null;
+	    d.fy = null;
+	  }
 	};
 
 	//==============================//
@@ -191,7 +191,7 @@
 	//localStorage.clear()
 
 	var defaultData = {
-	    current: 'home' };
+	  current: 'home' };
 
 	var initialState = localStorage['sb_recipe_state'] ? JSON.parse(localStorage['sb_recipe_state']) : defaultData;
 
@@ -200,7 +200,7 @@
 	//==============================//
 
 	var C = {
-	    SCREEN_DISPLAYED: 'SCREEN_DISPLAYED'
+	  SCREEN_DISPLAYED: 'SCREEN_DISPLAYED'
 	};
 
 	//==============================//
@@ -208,21 +208,21 @@
 	//==============================//
 
 	var current = function current() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ['home'];
-	    var action = arguments[1];
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ['home'];
+	  var action = arguments[1];
 
 
-	    if (action.type === C.SCREEN_DISPLAYED) {
-	        return action.payload;
-	    } else {
-	        return state;
-	    }
+	  if (action.type === C.SCREEN_DISPLAYED) {
+	    return action.payload;
+	  } else {
+	    return state;
+	  }
 	};
 
 	//Combine all reducers to appReducer
 
 	var appReducer = combineReducers({
-	    current: current
+	  current: current
 	});
 
 	//==============================//
@@ -232,7 +232,7 @@
 	var store = createStore(appReducer, initialState);
 
 	store.subscribe(function () {
-	    var state = JSON.stringify(store.getState());
+	  var state = JSON.stringify(store.getState());
 	});
 
 	//==============================//
@@ -241,10 +241,10 @@
 
 	var changeDisplay = function changeDisplay(displayed) {
 
-	    return {
-	        type: C.SCREEN_DISPLAYED,
-	        payload: displayed
-	    };
+	  return {
+	    type: C.SCREEN_DISPLAYED,
+	    payload: displayed
+	  };
 	};
 
 	//==============================//
@@ -252,272 +252,326 @@
 	//==============================//
 
 	var Home = function Home(_ref) {
-	    _objectDestructuringEmpty(_ref);
+	  _objectDestructuringEmpty(_ref);
 
-	    return _react2.default.createElement(
+	  return _react2.default.createElement(
+	    'div',
+	    { id: 'about', className: 'display' },
+	    _react2.default.createElement(
+	      'h1',
+	      null,
+	      'Hi, Im ',
+	      _react2.default.createElement(
+	        'span',
+	        { id: 'highlight' },
+	        'Steve Banton'
+	      ),
+	      '. I build JavaScript applications for desktop and mobile.'
+	    ),
+	    _react2.default.createElement(
+	      'h2',
+	      null,
+	      'Technologies I work with:'
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { id: 'techtable' },
+	      _react2.default.createElement(
 	        'div',
-	        { id: 'home', className: 'display' },
+	        { className: 'header' },
 	        _react2.default.createElement(
-	            'h1',
-	            null,
-	            'Home'
+	          'div',
+	          { className: 'header-text' },
+	          'Front-End:'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'skill' },
+	          'React.js / Redux'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'skill' },
+	          'React Native',
+	          _react2.default.createElement(
+	            'span',
+	            { id: 'sub-note' },
+	            _react2.default.createElement('br', null),
+	            'iOS / Android Development'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'skill' },
+	          'D3.js'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'skill' },
+	          'jQuery'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'skill' },
+	          'CSS / SCSS'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'skill' },
+	          'HTML'
 	        )
-	    );
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'header' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'header-text' },
+	          'Back-End:'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'skill' },
+	          'Node.js'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'skill' },
+	          'Express.js'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'skill' },
+	          'MongoDB'
+	        )
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'header' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'header-text' },
+	          'More:'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'skill' },
+	          'NPM'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'skill' },
+	          'Git'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'skill' },
+	          'Webpack'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'skill' },
+	          'Babel'
+	        )
+	      )
+	    )
+	  );
 	};
 
-	var About = function About(_ref2) {
-	    _objectDestructuringEmpty(_ref2);
+	var Services = function Services(_ref2) {
+	  _objectDestructuringEmpty(_ref2);
 
-	    return _react2.default.createElement(
-	        'div',
-	        { id: 'about', className: 'display' },
-	        _react2.default.createElement(
-	            'h1',
-	            null,
-	            'Hi, Im Steve Banton. I build full stack javascript applications for desktop and mobile.'
-	        ),
-	        _react2.default.createElement(
-	            'h2',
-	            null,
-	            'Technologies I work with:'
-	        ),
-	        _react2.default.createElement(
-	            'div',
-	            null,
-	            'Front-End'
-	        ),
-	        _react2.default.createElement(
-	            'div',
-	            null,
-	            'Data Visualization'
-	        ),
-	        _react2.default.createElement(
-	            'div',
-	            null,
-	            'Back-End'
-	        )
-	    );
+	  return _react2.default.createElement(
+	    'div',
+	    { id: 'services', className: 'display' },
+	    _react2.default.createElement(
+	      'h1',
+	      null,
+	      'Services'
+	    )
+	  );
 	};
 
-	var Services = function Services(_ref3) {
-	    _objectDestructuringEmpty(_ref3);
+	var Work = function Work(_ref3) {
+	  _objectDestructuringEmpty(_ref3);
 
-	    return _react2.default.createElement(
-	        'div',
-	        { id: 'services', className: 'display' },
-	        _react2.default.createElement(
-	            'h1',
-	            null,
-	            'Services'
-	        )
-	    );
+	  return _react2.default.createElement(
+	    'div',
+	    { id: 'work', className: 'display' },
+	    _react2.default.createElement(
+	      'h1',
+	      null,
+	      'Work'
+	    )
+	  );
 	};
 
-	var Work = function Work(_ref4) {
-	    _objectDestructuringEmpty(_ref4);
+	var Contact = function Contact(_ref4) {
+	  _objectDestructuringEmpty(_ref4);
 
-	    return _react2.default.createElement(
-	        'div',
-	        { id: 'work', className: 'display' },
-	        _react2.default.createElement(
-	            'h1',
-	            null,
-	            'Work'
-	        ),
-	        _react2.default.createElement(
-	            'p',
-	            null,
-	            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse molestie aliquam velit id fermentum. Duis elit odio, fringilla vel porta non, ultricies id nunc. Morbi tristique dolor magna, vitae dictum massa rutrum non. Etiam rhoncus dictum nibh, id porta nunc varius tristique. Etiam arcu arcu, dictum ac cursus sed, sollicitudin in elit. Nam pretium aliquam arcu. Nunc semper dui iaculis blandit aliquet. Mauris faucibus, ligula sit amet maximus gravida, elit justo imperdiet augue, quis egestas velit velit id sem. Sed id semper libero. Nunc semper id metus vitae pharetra. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mi ipsum, tempor non accumsan id, tristique non neque.'
-	        ),
-	        _react2.default.createElement(
-	            'p',
-	            null,
-	            'Donec felis risus, condimentum sit amet risus ut, commodo lacinia mauris. Integer ut sollicitudin metus, in accumsan nisi. Praesent id odio ultricies, placerat ipsum a, aliquet velit. Vivamus ultricies pretium velit, a tempor nulla interdum eget. Nulla sapien urna, accumsan ac molestie sit amet, scelerisque non sapien. Curabitur nisl nisl, sodales tempus accumsan eget, rutrum luctus erat. Aenean vel libero ultrices, laoreet ante vel, tempor dolor. Aliquam bibendum quam leo, eu porttitor nisi bibendum sit amet. Nulla condimentum sem ac nisi euismod tempus. Sed lacus tortor, eleifend et ultricies at, mollis et ligula. Sed suscipit, risus at semper maximus, odio mi varius tellus, non laoreet justo leo ut erat. Donec imperdiet hendrerit urna sed sagittis. Curabitur bibendum consectetur enim, sit amet luctus neque venenatis quis. Integer ac magna consectetur, efficitur sem vitae, tempor enim. Quisque metus lacus, mattis quis diam eu, ultrices mollis tellus. Sed dictum nec nisi vitae convallis.'
-	        ),
-	        _react2.default.createElement(
-	            'p',
-	            null,
-	            'Vestibulum egestas rhoncus facilisis. Morbi quis ipsum sed nunc luctus tincidunt. Duis vel purus sapien. Maecenas ultrices sit amet eros quis vestibulum. Sed euismod enim in ipsum hendrerit tristique. Suspendisse feugiat consectetur enim, ac suscipit risus blandit ac. Cras aliquet dictum elit, sit amet porta erat condimentum vel. Pellentesque nulla nisl, sollicitudin ut urna vitae, rhoncus vulputate dui. Mauris et gravida mi. Duis lacinia facilisis neque in vestibulum.'
-	        ),
-	        _react2.default.createElement(
-	            'p',
-	            null,
-	            'Nunc rutrum at justo a dapibus. Phasellus consectetur libero sit amet elit varius faucibus. Mauris vel ultricies enim. Praesent in laoreet quam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vitae leo pellentesque, porttitor quam sed, condimentum turpis. Maecenas efficitur velit sit amet ex vehicula elementum. Mauris consequat maximus risus vitae tempus. Vivamus vitae diam elit. Donec efficitur egestas molestie. Nunc lobortis eget leo a commodo. Nullam sem nunc, aliquet ac mattis maximus, suscipit quis massa. Vestibulum mollis dictum justo vitae mollis. Nunc mollis ornare tortor, id volutpat est aliquam vitae. Praesent pretium sapien quis lectus pellentesque efficitur. Maecenas semper lorem et ipsum semper fringilla.'
-	        ),
-	        _react2.default.createElement(
-	            'p',
-	            null,
-	            'Mauris a velit eget lectus bibendum mollis. Nulla maximus molestie nunc eget cursus. Morbi semper, dolor ut ultrices dapibus, purus mi vehicula leo, vitae semper urna sem eget quam. Suspendisse nec pharetra augue, imperdiet vulputate quam. Nunc tristique condimentum facilisis. Nunc turpis lacus, pretium nec convallis ut, auctor sed enim. Sed id hendrerit risus.'
-	        )
-	    );
-	};
-
-	var Contact = function Contact(_ref5) {
-	    _objectDestructuringEmpty(_ref5);
-
-	    return _react2.default.createElement(
-	        'div',
-	        { id: 'contact', className: 'display' },
-	        _react2.default.createElement(
-	            'h1',
-	            null,
-	            'Contact'
-	        ),
-	        _react2.default.createElement(
-	            'p',
-	            null,
-	            'Have a web project'
-	        )
-	    );
+	  return _react2.default.createElement(
+	    'div',
+	    { id: 'contact', className: 'display' },
+	    _react2.default.createElement(
+	      'h1',
+	      null,
+	      'Contact'
+	    ),
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      'Have a web project'
+	    )
+	  );
 	};
 
 	//Major Windows, Called From Parent
 
 	var Menu = function Menu() {
 
-	    return _react2.default.createElement(
-	        'div',
-	        { id: 'menu' },
-	        _react2.default.createElement('img', { className: 'header-image', src: 'steve.png', width: '150' }),
-	        _react2.default.createElement(
-	            'p',
-	            { className: 'label-text' },
-	            'Steve Banton'
-	        ),
-	        _react2.default.createElement(
-	            'p',
-	            { className: 'label-text' },
-	            'Full Stack Web & Mobile Developer'
-	        ),
-	        _react2.default.createElement('p', { className: 'spacer' }),
-	        _react2.default.createElement(
-	            'p',
-	            { className: 'menuitem', onClick: function onClick() {
+	  return _react2.default.createElement(
+	    'div',
+	    { id: 'menu' },
+	    _react2.default.createElement('img', { className: 'header-image', src: 'steve.png', width: '150' }),
+	    _react2.default.createElement(
+	      'p',
+	      { className: 'label-text' },
+	      'Steve Banton'
+	    ),
+	    _react2.default.createElement(
+	      'p',
+	      { className: 'label-text' },
+	      'Full Stack Web & Mobile Developer'
+	    ),
+	    _react2.default.createElement('p', { className: 'spacer' }),
+	    _react2.default.createElement(
+	      'p',
+	      { className: 'menuitem', onClick: function onClick() {
 
-	                    store.dispatch(changeDisplay('home'));
-	                } },
-	            '$ Home'
-	        ),
-	        _react2.default.createElement(
-	            'p',
-	            { className: 'menuitem', onClick: function onClick() {
+	          store.dispatch(changeDisplay('home'));
+	        } },
+	      '$ Home'
+	    ),
+	    _react2.default.createElement(
+	      'p',
+	      { className: 'menuitem', onClick: function onClick() {
 
-	                    store.dispatch(changeDisplay('work'));
-	                } },
-	            '$ Work'
-	        ),
-	        _react2.default.createElement(
-	            'p',
-	            { className: 'menuitem', onClick: function onClick() {
+	          store.dispatch(changeDisplay('work'));
+	        } },
+	      '$ Work'
+	    ),
+	    _react2.default.createElement(
+	      'p',
+	      { className: 'menuitem', onClick: function onClick() {
 
-	                    store.dispatch(changeDisplay('contact'));
-	                } },
-	            '$ Contact Me',
-	            _react2.default.createElement(
-	                'span',
-	                { id: 'blink' },
-	                ' _'
-	            )
-	        ),
-	        _react2.default.createElement('br', null),
-	        _react2.default.createElement('div', { id: 'chart3' }),
-	        _react2.default.createElement(
-	            'p',
-	            { className: 'created-with' },
-	            'Created with [',
-	            _react2.default.createElement('br', null),
-	            '\xA0\xA0\'React\', ',
-	            _react2.default.createElement('br', null),
-	            '\xA0\xA0\'Redux\', ',
-	            _react2.default.createElement('br', null),
-	            '\xA0\xA0\'D3\', ',
-	            _react2.default.createElement('br', null),
-	            '\xA0\xA0\'',
-	            _react2.default.createElement('i', { className: 'fa fa-coffee' }),
-	            '\', ',
-	            _react2.default.createElement('br', null),
-	            '\xA0\xA0\'',
-	            _react2.default.createElement('i', { className: 'fa fa-heart' }),
-	            ' for Terminal\'',
-	            _react2.default.createElement('br', null),
-	            ']'
-	        )
-	    );
+	          store.dispatch(changeDisplay('contact'));
+	        } },
+	      '$ Contact Me',
+	      _react2.default.createElement(
+	        'span',
+	        { id: 'blink' },
+	        ' _'
+	      )
+	    ),
+	    _react2.default.createElement('br', null),
+	    _react2.default.createElement('div', { id: 'chart3' }),
+	    _react2.default.createElement(
+	      'p',
+	      { className: 'created-with' },
+	      'Created with [',
+	      _react2.default.createElement('br', null),
+	      '\xA0\xA0\'React\', ',
+	      _react2.default.createElement('br', null),
+	      '\xA0\xA0\'Redux\', ',
+	      _react2.default.createElement('br', null),
+	      '\xA0\xA0\'D3\', ',
+	      _react2.default.createElement('br', null),
+	      '\xA0\xA0\'',
+	      _react2.default.createElement('i', { className: 'fa fa-coffee' }),
+	      '\', ',
+	      _react2.default.createElement('br', null),
+	      '\xA0\xA0\'',
+	      _react2.default.createElement('i', { className: 'fa fa-heart' }),
+	      ' for Terminal\'',
+	      _react2.default.createElement('br', null),
+	      ']'
+	    )
+	  );
 	};
 
-	var View = function View(_ref6) {
-	    var current = _ref6.current;
+	var View = function View(_ref5) {
+	  var current = _ref5.current;
 
 
-	    var details = {};
+	  var details = {};
 
-	    var title = '',
-	        ingredients = [],
-	        directions = '',
-	        indexNumber = '';
+	  var title = '',
+	      ingredients = [],
+	      directions = '',
+	      indexNumber = '';
 
-	    return _react2.default.createElement(
-	        'div',
-	        { id: 'view' },
-	        current === 'home' ? _react2.default.createElement(Home, null) : current === 'about' ? _react2.default.createElement(About, null) : current === 'services' ? _react2.default.createElement(Services, null) : current === 'work' ? _react2.default.createElement(Work, null) : current === 'contact' ? _react2.default.createElement(Contact, null) : _react2.default.createElement(Home, null)
-	    );
+	  return _react2.default.createElement(
+	    'div',
+	    { id: 'view' },
+	    current === 'home' ? _react2.default.createElement(Home, null) : current === 'about' ? _react2.default.createElement(About, null) : current === 'services' ? _react2.default.createElement(Services, null) : current === 'work' ? _react2.default.createElement(Work, null) : current === 'contact' ? _react2.default.createElement(Contact, null) : _react2.default.createElement(Home, null)
+	  );
 	};
 
 	//Parent container, contains state methods
 
 	var App = function (_Component) {
-	    _inherits(App, _Component);
+	  _inherits(App, _Component);
 
-	    _createClass(App, [{
-	        key: 'componentWillMount',
+	  _createClass(App, [{
+	    key: 'componentWillMount',
 
 
-	        //constructor
+	    //constructor
 
-	        value: function componentWillMount() {}
-	    }, {
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            store.subscribe(this.storeChange);
-	        }
-	    }]);
-
-	    function App(props) {
-	        _classCallCheck(this, App);
-
-	        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
-
-	        _this.state = {
-	            current: initialState.current
-	        };
-	        _this.storeChange = _this.storeChange.bind(_this);
-	        return _this;
+	    value: function componentWillMount() {}
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      store.subscribe(this.storeChange);
 	    }
+	  }]);
 
-	    //methods
+	  function App(props) {
+	    _classCallCheck(this, App);
 
-	    _createClass(App, [{
-	        key: 'storeChange',
-	        value: function storeChange() {
-	            this.setState({
-	                current: store.getState().current
-	            });
-	            //console.log(store.getState())
-	            //console.log(JSON.stringify(this.state))
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'app' },
-	                _react2.default.createElement(Menu, null),
-	                _react2.default.createElement(View, { current: this.state.current })
-	            );
-	        }
-	    }]);
+	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-	    return App;
+	    _this.state = {
+	      current: initialState.current
+	    };
+	    _this.storeChange = _this.storeChange.bind(_this);
+	    return _this;
+	  }
+
+	  //methods
+
+	  _createClass(App, [{
+	    key: 'storeChange',
+	    value: function storeChange() {
+	      this.setState({
+	        current: store.getState().current
+	      });
+	      //console.log(store.getState())
+	      //console.log(JSON.stringify(this.state))
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'app' },
+	        _react2.default.createElement(Menu, null),
+	        _react2.default.createElement(View, { current: this.state.current })
+	      );
+	    }
+	  }]);
+
+	  return App;
 	}(Component);
 
 	//Parent render
@@ -22323,10 +22377,10 @@
 
 	exports = module.exports = __webpack_require__(184)();
 	// imports
-	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Condiment);", ""]);
+
 
 	// module
-	exports.push([module.id, "body {\n  padding: 0;\n  margin: 0;\n  background-color: black;\n  font-family: Lucida Console, Monaco, monospace;\n  overflow-x: hidden; }\n\n#react-container {\n  margin: 0;\n  padding: 0;\n  color: white; }\n  #react-container h1 {\n    font-family: 'Condiment';\n    font-weight: 100;\n    font-size: 75px;\n    font-style: bold;\n    margin: 0;\n    padding: 0; }\n  #react-container h2 {\n    font-family: 'Condiment';\n    font-weight: 100;\n    font-size: 30px;\n    margin-bottom: 20px; }\n\n.app {\n  width: 100vw;\n  height: 100vh;\n  padding: 0;\n  margin: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap; }\n\n#menu {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 1 auto;\n          flex: 0 1 auto;\n  margin: 0;\n  width: 350px;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 1; }\n\n#view {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 1 auto;\n          flex: 1 1 auto;\n  width: 500px;\n  margin: 0;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 0; }\n\n.submit-button {\n  border: 0px;\n  background-color: white;\n  color: black;\n  padding: 8px;\n  margin: 16px;\n  cursor: pointer; }\n  .submit-button:active {\n    background-color: #1976D2; }\n\n.menuitem {\n  width: 200px;\n  cursor: pointer;\n  background-color: white;\n  color: black;\n  display: block;\n  padding: 10px;\n  margin: 10px auto 10px auto; }\n  .menuitem:hover {\n    text-decoration: underline; }\n\n.header-image {\n  border-radius: 100px;\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n  display: block;\n  margin: 0 auto 0 auto;\n  -ms-interpolation-mode: nearest-neighbor;\n      image-rendering: -webkit-optimize-contrast;\n      image-rendering: -moz-crisp-edges;\n      image-rendering: pixelated; }\n\n.label-text {\n  font-size: 10px;\n  text-align: center; }\n\n.created-with {\n  padding-left: 77px;\n  font-size: 10px;\n  font-align: left; }\n\n.spacer {\n  margin-top: 40px; }\n\n.icons {\n  fill: white; }\n\n#chart3 {\n  width: 300px;\n  margin: 0 auto 30px auto; }\n\n#blink {\n  opacity: 0;\n  -webkit-animation: cursor 1s infinite;\n          animation: cursor 1s infinite; }\n\n@-webkit-keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n.icons {\n  cursor: pointer; }\n", ""]);
+	exports.push([module.id, "body {\n  padding: 0;\n  margin: 0;\n  background-color: black;\n  font-family: Lucida Console, Monaco, monospace;\n  overflow-x: hidden; }\n\n#react-container {\n  margin: 0;\n  padding: 0;\n  color: white; }\n  #react-container h1 {\n    font-family: inherit;\n    font-size: 45px;\n    font-style: bold;\n    margin: 0;\n    padding-left: 4vw;\n    padding-bottom: 30px; }\n  #react-container h2 {\n    font-family: inherit;\n    font-weight: 100;\n    font-size: 30px;\n    padding-bottom: 30px;\n    padding-left: 4vw; }\n\n#techtable {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap;\n  -webkit-box-align: start;\n      -ms-flex-align: start;\n          align-items: flex-start;\n  padding: 0 3vw 30px 3vw; }\n\n#techtable > * {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 0 auto;\n          flex: 1 0 auto;\n  min-width: 200px; }\n\n#sub-note {\n  font-size: 8px; }\n\n.header-text {\n  padding: 10px;\n  margin: 10px;\n  background-color: #20C20E;\n  color: white;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.skill {\n  padding: 10px;\n  margin: 10px;\n  background-color: white;\n  color: black;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.app {\n  width: 100vw;\n  height: 100vh;\n  padding: 0;\n  margin: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap; }\n\n#menu {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 1 auto;\n          flex: 0 1 auto;\n  margin: 0;\n  width: 350px;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 1; }\n\n#view {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 1 auto;\n          flex: 1 1 auto;\n  width: 500px;\n  margin: 0;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 0; }\n\n.submit-button {\n  border: 0px;\n  background-color: white;\n  color: black;\n  padding: 8px;\n  margin: 16px;\n  cursor: pointer; }\n  .submit-button:active {\n    background-color: #1976D2; }\n\n.menuitem {\n  width: 200px;\n  cursor: pointer;\n  background-color: white;\n  color: black;\n  display: block;\n  padding: 10px;\n  margin: 10px auto 10px auto; }\n  .menuitem:hover {\n    text-decoration: underline; }\n\n.header-image {\n  border-radius: 100px;\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n  display: block;\n  margin: 0 auto 0 auto;\n  -ms-interpolation-mode: nearest-neighbor;\n      image-rendering: -webkit-optimize-contrast;\n      image-rendering: -moz-crisp-edges;\n      image-rendering: pixelated; }\n\n.label-text {\n  font-size: 10px;\n  text-align: center; }\n\n.created-with {\n  padding-left: 77px;\n  font-size: 10px;\n  font-align: left; }\n\n.spacer {\n  margin-top: 40px; }\n\n.icons {\n  fill: white; }\n\n#chart3 {\n  width: 300px;\n  margin: 0 auto 30px auto; }\n\n#blink {\n  opacity: 0;\n  -webkit-animation: cursor 1s infinite;\n          animation: cursor 1s infinite; }\n\n#highlight {\n  background-color: #20C20E; }\n\n@-webkit-keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n.icons {\n  cursor: pointer; }\n", ""]);
 
 	// exports
 
