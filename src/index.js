@@ -189,6 +189,25 @@ const forceLayout = () => {
 
 const defaultData = {
   current: 'home', //second field: editing on or off
+  tags: [['react', 'on'],['redux','on'],['d3', 'on']],
+  projects: [
+    {
+      title: "Recipe Box",
+      image: "./images/portfolio/recipe.jpg",
+      description: "An editable recipe box created with React and Redux and Material Design. Add and edit recipes, with functionality to add and delete ingredients one by one.",
+      tags: ['react','redux'],
+      link: "https://codepen.io/stevesacct/pen/NjGxeL",
+      github: ""
+    },
+    {
+      title: "Graph Of Countries That Share A Border",
+      image: "./images/portfolio/force-directed.jpg",
+      description: "A D3.js force directed graph of states that share a land or water border.",
+      tags: ['d3'],
+      link: "https://codepen.io/stevesacct/pen/RpMQeB",
+      github: ""
+    }
+  ],
   menuDisplayed: false
 }
 
@@ -201,7 +220,11 @@ const initialState = defaultData;
 
 const C = {
   SCREEN_DISPLAYED: 'SCREEN_DISPLAYED',
-  MENU_DISPLAYED: 'MENU_DISPLAYED'
+  TAG_ON: 'TAG_ON',
+  TAG_OFF: 'TAG_OFF',
+  MENU_DISPLAYED: 'MENU_DISPLAYED',
+  ADD_PROJECT: 'ADD_PROJECT',
+  REMOVE_PROJECT: 'REMOVE_PROJECT'
 }
 
 //==============================//
@@ -215,27 +238,49 @@ const current = (state=['home'], action) => {
   } else {
     return state
   }
-
 }
 
-const menuDisplayed = (state=[false], action) => {
+const menuDisplayed = (state=['react','redux','d3'], action) => {
 
-  if (action.type === C.MENU_DISPLAYED) {
-    return action.payload
+  if (action.type === C.ADD_TAG) {
+    let hasTag = state.some(item => item === action.payload)
+    return (hasTag) ? state : [...state, action.payload]
   } else if (action.type === C.SCREEN_DISPLAYED) {
     return false
   } else {
     return state
   }
-
 }
 
+const tags = (state=[], action) => {
+  if (action.type === C.TAG_ON) {
+    return action.payload
+  } else if (action.type === C.TAG_OFF) {
+    return action.payload
+  } else {
+    return state
+  }
+}
+
+//Not currently functioning - all projects added to defaultData
+const projects = (state=[false], action) => {
+
+  if (action.type === C.ADD_PROJECT) {
+    return state
+  } else if (action.type === C.REMOVE_PROJECT) {
+    return state
+  } else {
+    return state
+  }
+}
 
 //Combine all reducers to appReducer
 
 const appReducer = combineReducers({
   current,
-  menuDisplayed
+  tags,
+  menuDisplayed,
+  projects
 })
 
 
@@ -269,6 +314,40 @@ const changeMenuDisplay = (toggle) => {
   }
 }
 
+const tagToggle = (tag, allTags) => {
+
+  if (tag[1]=='off') {
+
+    let newTags = allTags;
+    newTags[allTags.findIndex((item, index) => {
+      return item[0] == tag[0]
+    })] = [tag[0],'on']
+
+    return {
+      type: C.TAG_ON,
+      payload: newTags
+    }
+  } else {
+
+    let newTags = allTags;
+    newTags[allTags.findIndex((item, index) => {
+      return item[0] == tag[0]
+    })] = [tag[0],'off']
+
+    return {
+      type: C.TAG_OFF,
+      payload: newTags
+    }
+  }
+}
+
+const removeTag = (tag) => {
+
+  return {
+    type: C.TAG_OFF,
+    payload: tag
+  }
+}
 
 
 //==============================//
@@ -327,13 +406,98 @@ const Services = ({  }) => {
 		)
 }
 
-const Work = ({  }) => {
+const Work = ({ tags, projects }) => {
+
+const onTags = (stateTags) => {
+
+  return stateTags.map((item, index) => {
+    return item[1] == 'on' ? item[0] : null;
+  });
+
+}
+
+const tagIntersection = (stateTags, projectTags) => {
+
+  let intersectVerify = false;
+
+  for (let i = 0; i < stateTags.length ; i++) {
+
+    for (let j = 0;j < projectTags.length ; j++) {
+
+      if (stateTags[i] == projectTags[j]) {
+        intersectVerify = true;
+      } else {
+
+      }
+    }
+  }
+  return intersectVerify;
+
+}
 
 		return (
 			<div id='work' className='display'>
 
-        <h1>Work</h1>
+        {tags.map((item, index, allTags) => {
+          return <Tag tag={item} key={index} allTags={allTags}/>
+        })}
+        <div id='project-container'>
+        {
+          projects.map((item, index) => {
+          if (tagIntersection(onTags(tags), item.tags)) {
+            return <Project project={item} key={index}/>;
+          } else {
+            return
+          }
+        })
 
+        }
+
+        </div>
+
+      </div>
+		)
+}
+
+const Tag = ({ tag, allTags }) => {
+
+		return (
+			<span className={tag[1] == 'on' ? 'tag-on' : 'tag-off'}
+            onClick={() => {
+
+      store.dispatch(
+        tagToggle(tag, allTags)
+      );
+
+      }}>
+
+      {tag[0]}
+
+      </span>
+		)
+}
+
+const Project = ({ project }) => {
+
+const cssStyle = () => {
+  return {background: 'url('+ project.image +') no-repeat ',
+          backgroundSize: '100%',
+          backgroundPosition: 'center center'
+          }
+}
+		return (
+			<div className='project' style={cssStyle()}>
+        <a href={project.link} target='_blank'>
+        <div className='shadow'>
+            <div>{project['title']}</div>
+            <div>{project['description']}</div>
+            <div>{project['github']}</div>
+            <div>Libraries: {project['tags'].map((item) => {
+              return item + " "
+            })}</div>
+            <div>Click to view live project.</div>
+        </div>
+        </a>
       </div>
 		)
 }
@@ -387,7 +551,7 @@ const Menu = ( { menu } ) => {
 
   			<div id={menu == true ? "menu-on" : "menu"}>
 
-          <img className='header-image' src='steve.png' width='150' />
+          <img className='header-image' src='./images/steve.png' width='150' />
 
           <p className='label-text'>Steve Banton</p>
           <p className='label-text'>Full Stack Web & Mobile Developer</p>
@@ -435,7 +599,7 @@ const Menu = ( { menu } ) => {
 		)
 }
 
-const View = ({ current }) => {
+const View = ({ current, tags, projects }) => {
 
  let details = {}
 
@@ -447,7 +611,7 @@ const View = ({ current }) => {
 		return (
 			<div id="view">
 
-        {(current === 'home') ? <Home /> : (current === 'about') ? <About /> : (current === 'services') ? <Services /> :(current === 'work') ? <Work /> : (current === 'contact') ? <Contact /> : <Home />}
+        {(current === 'home') ? <Home /> : (current === 'about') ? <About /> : (current === 'services') ? <Services /> :(current === 'work') ? <Work tags={tags} projects={projects} /> : (current === 'contact') ? <Contact /> : <Home />}
 
       </div>
 		)
@@ -472,7 +636,9 @@ class App extends Component {
     super(props)
     this.state = {
       current: initialState.current,
-      menuDisplayed: initialState.menuDisplayed
+      tags: initialState.tags,
+      menuDisplayed: initialState.menuDisplayed,
+      projects: initialState.projects
     }
     this.storeChange = this.storeChange.bind(this)
   }
@@ -482,7 +648,9 @@ class App extends Component {
  storeChange () {
    this.setState({
      current: store.getState().current,
-     menuDisplayed: store.getState().menuDisplayed
+     tags: store.getState().tags,
+     menuDisplayed: store.getState().menuDisplayed,
+     projects: store.getState().projects
    })
    //console.log(store.getState())
    //console.log(JSON.stringify(this.state))
@@ -492,7 +660,7 @@ class App extends Component {
     return (
       <div className="app">
         <Menu menu={this.state.menuDisplayed}/>
-        <View current={this.state.current} />
+        <View current={this.state.current} tags={this.state.tags} projects={this.state.projects}/>
       </div>
     )
   }
