@@ -68,6 +68,8 @@
 
 	function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure undefined"); }
 
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 	var Redux = __webpack_require__(226);
 
 	var d3 = __webpack_require__(247);
@@ -192,6 +194,22 @@
 
 	var defaultData = {
 	  current: 'home', //second field: editing on or off
+	  tags: [['react', 'on'], ['redux', 'on'], ['d3', 'on']],
+	  projects: [{
+	    title: "Recipe Box",
+	    image: "./images/portfolio/recipe.jpg",
+	    description: "An editable recipe box created with React and Redux and Material Design. Add and edit recipes, with functionality to add and delete ingredients one by one.",
+	    tags: ['react', 'redux'],
+	    link: "https://codepen.io/stevesacct/pen/NjGxeL",
+	    github: ""
+	  }, {
+	    title: "Graph Of Countries That Share A Border",
+	    image: "./images/portfolio/force-directed.jpg",
+	    description: "A D3.js force directed graph of states that share a land or water border.",
+	    tags: ['d3'],
+	    link: "https://codepen.io/stevesacct/pen/RpMQeB",
+	    github: ""
+	  }],
 	  menuDisplayed: false
 	};
 
@@ -203,7 +221,11 @@
 
 	var C = {
 	  SCREEN_DISPLAYED: 'SCREEN_DISPLAYED',
-	  MENU_DISPLAYED: 'MENU_DISPLAYED'
+	  TAG_ON: 'TAG_ON',
+	  TAG_OFF: 'TAG_OFF',
+	  MENU_DISPLAYED: 'MENU_DISPLAYED',
+	  ADD_PROJECT: 'ADD_PROJECT',
+	  REMOVE_PROJECT: 'REMOVE_PROJECT'
 	};
 
 	//==============================//
@@ -223,14 +245,45 @@
 	};
 
 	var menuDisplayed = function menuDisplayed() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ['react', 'redux', 'd3'];
+	  var action = arguments[1];
+
+
+	  if (action.type === C.ADD_TAG) {
+	    var hasTag = state.some(function (item) {
+	      return item === action.payload;
+	    });
+	    return hasTag ? state : [].concat(_toConsumableArray(state), [action.payload]);
+	  } else if (action.type === C.SCREEN_DISPLAYED) {
+	    return false;
+	  } else {
+	    return state;
+	  }
+	};
+
+	var tags = function tags() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+	  var action = arguments[1];
+
+	  if (action.type === C.TAG_ON) {
+	    return action.payload;
+	  } else if (action.type === C.TAG_OFF) {
+	    return action.payload;
+	  } else {
+	    return state;
+	  }
+	};
+
+	//Not currently functioning - all projects added to defaultData
+	var projects = function projects() {
 	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [false];
 	  var action = arguments[1];
 
 
-	  if (action.type === C.MENU_DISPLAYED) {
-	    return action.payload;
-	  } else if (action.type === C.SCREEN_DISPLAYED) {
-	    return false;
+	  if (action.type === C.ADD_PROJECT) {
+	    return state;
+	  } else if (action.type === C.REMOVE_PROJECT) {
+	    return state;
 	  } else {
 	    return state;
 	  }
@@ -240,7 +293,9 @@
 
 	var appReducer = combineReducers({
 	  current: current,
-	  menuDisplayed: menuDisplayed
+	  tags: tags,
+	  menuDisplayed: menuDisplayed,
+	  projects: projects
 	});
 
 	//==============================//
@@ -270,6 +325,41 @@
 	  return {
 	    type: C.MENU_DISPLAYED,
 	    payload: toggle
+	  };
+	};
+
+	var tagToggle = function tagToggle(tag, allTags) {
+
+	  if (tag[1] == 'off') {
+
+	    var newTags = allTags;
+	    newTags[allTags.findIndex(function (item, index) {
+	      return item[0] == tag[0];
+	    })] = [tag[0], 'on'];
+
+	    return {
+	      type: C.TAG_ON,
+	      payload: newTags
+	    };
+	  } else {
+
+	    var _newTags = allTags;
+	    _newTags[allTags.findIndex(function (item, index) {
+	      return item[0] == tag[0];
+	    })] = [tag[0], 'off'];
+
+	    return {
+	      type: C.TAG_OFF,
+	      payload: _newTags
+	    };
+	  }
+	};
+
+	var removeTag = function removeTag(tag) {
+
+	  return {
+	    type: C.TAG_OFF,
+	    payload: tag
 	  };
 	};
 
@@ -419,21 +509,123 @@
 	};
 
 	var Work = function Work(_ref3) {
-	  _objectDestructuringEmpty(_ref3);
+	  var tags = _ref3.tags,
+	      projects = _ref3.projects;
+
+
+	  var onTags = function onTags(stateTags) {
+
+	    return stateTags.map(function (item, index) {
+	      return item[1] == 'on' ? item[0] : null;
+	    });
+	  };
+
+	  var tagIntersection = function tagIntersection(stateTags, projectTags) {
+
+	    var intersectVerify = false;
+
+	    for (var i = 0; i < stateTags.length; i++) {
+
+	      for (var j = 0; j < projectTags.length; j++) {
+
+	        if (stateTags[i] == projectTags[j]) {
+	          intersectVerify = true;
+	        } else {}
+	      }
+	    }
+	    return intersectVerify;
+	  };
 
 	  return _react2.default.createElement(
 	    'div',
 	    { id: 'work', className: 'display' },
+	    tags.map(function (item, index, allTags) {
+	      return _react2.default.createElement(Tag, { tag: item, key: index, allTags: allTags });
+	    }),
 	    _react2.default.createElement(
-	      'h1',
-	      null,
-	      'Work'
+	      'div',
+	      { id: 'project-container' },
+	      projects.map(function (item, index) {
+	        if (tagIntersection(onTags(tags), item.tags)) {
+	          return _react2.default.createElement(Project, { project: item, key: index });
+	        } else {
+	          return;
+	        }
+	      })
 	    )
 	  );
 	};
 
-	var Contact = function Contact(_ref4) {
-	  _objectDestructuringEmpty(_ref4);
+	var Tag = function Tag(_ref4) {
+	  var tag = _ref4.tag,
+	      allTags = _ref4.allTags;
+
+
+	  return _react2.default.createElement(
+	    'span',
+	    { className: tag[1] == 'on' ? 'tag-on' : 'tag-off',
+	      onClick: function onClick() {
+
+	        store.dispatch(tagToggle(tag, allTags));
+	      } },
+	    tag[0]
+	  );
+	};
+
+	var Project = function Project(_ref5) {
+	  var project = _ref5.project;
+
+
+	  var cssStyle = function cssStyle() {
+	    return { background: 'url(' + project.image + ') no-repeat ',
+	      backgroundSize: '100%',
+	      backgroundPosition: 'center center'
+	    };
+	  };
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'project', style: cssStyle() },
+	    _react2.default.createElement(
+	      'a',
+	      { href: project.link, target: '_blank' },
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'shadow' },
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          project['title']
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          project['description']
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          project['github']
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          'Libraries: ',
+	          project['tags'].map(function (item) {
+	            return item + " ";
+	          })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          'Click to view live project.'
+	        )
+	      )
+	    )
+	  );
+	};
+
+	var Contact = function Contact(_ref6) {
+	  _objectDestructuringEmpty(_ref6);
 
 	  return _react2.default.createElement(
 	    'div',
@@ -453,8 +645,8 @@
 
 	//Major Windows, Called From Parent
 
-	var Menu = function Menu(_ref5) {
-	  var menu = _ref5.menu;
+	var Menu = function Menu(_ref7) {
+	  var menu = _ref7.menu;
 
 
 	  var fadeOn = function fadeOn() {
@@ -483,7 +675,7 @@
 	    _react2.default.createElement(
 	      'div',
 	      { id: menu == true ? "menu-on" : "menu" },
-	      _react2.default.createElement('img', { className: 'header-image', src: 'steve.png', width: '150' }),
+	      _react2.default.createElement('img', { className: 'header-image', src: './images/steve.png', width: '150' }),
 	      _react2.default.createElement(
 	        'p',
 	        { className: 'label-text' },
@@ -554,8 +746,10 @@
 	  );
 	};
 
-	var View = function View(_ref6) {
-	  var current = _ref6.current;
+	var View = function View(_ref8) {
+	  var current = _ref8.current,
+	      tags = _ref8.tags,
+	      projects = _ref8.projects;
 
 
 	  var details = {};
@@ -568,7 +762,7 @@
 	  return _react2.default.createElement(
 	    'div',
 	    { id: 'view' },
-	    current === 'home' ? _react2.default.createElement(Home, null) : current === 'about' ? _react2.default.createElement(About, null) : current === 'services' ? _react2.default.createElement(Services, null) : current === 'work' ? _react2.default.createElement(Work, null) : current === 'contact' ? _react2.default.createElement(Contact, null) : _react2.default.createElement(Home, null)
+	    current === 'home' ? _react2.default.createElement(Home, null) : current === 'about' ? _react2.default.createElement(About, null) : current === 'services' ? _react2.default.createElement(Services, null) : current === 'work' ? _react2.default.createElement(Work, { tags: tags, projects: projects }) : current === 'contact' ? _react2.default.createElement(Contact, null) : _react2.default.createElement(Home, null)
 	  );
 	};
 
@@ -598,7 +792,9 @@
 
 	    _this.state = {
 	      current: initialState.current,
-	      menuDisplayed: initialState.menuDisplayed
+	      tags: initialState.tags,
+	      menuDisplayed: initialState.menuDisplayed,
+	      projects: initialState.projects
 	    };
 	    _this.storeChange = _this.storeChange.bind(_this);
 	    return _this;
@@ -611,7 +807,9 @@
 	    value: function storeChange() {
 	      this.setState({
 	        current: store.getState().current,
-	        menuDisplayed: store.getState().menuDisplayed
+	        tags: store.getState().tags,
+	        menuDisplayed: store.getState().menuDisplayed,
+	        projects: store.getState().projects
 	      });
 	      //console.log(store.getState())
 	      //console.log(JSON.stringify(this.state))
@@ -623,7 +821,7 @@
 	        'div',
 	        { className: 'app' },
 	        _react2.default.createElement(Menu, { menu: this.state.menuDisplayed }),
-	        _react2.default.createElement(View, { current: this.state.current })
+	        _react2.default.createElement(View, { current: this.state.current, tags: this.state.tags, projects: this.state.projects })
 	      );
 	    }
 	  }]);
@@ -22437,7 +22635,7 @@
 
 
 	// module
-	exports.push([module.id, "body {\n  padding: 0;\n  margin: 0;\n  background-color: black;\n  font-family: Lucida Console, Monaco, monospace;\n  overflow-x: hidden; }\n\n#react-container {\n  margin: 0;\n  padding: 0;\n  color: white; }\n  #react-container h1 {\n    font-family: inherit;\n    font-size: 45px;\n    font-style: bold;\n    margin: 0;\n    padding-left: 4vw;\n    padding-bottom: 30px; }\n  #react-container h2 {\n    font-family: inherit;\n    font-weight: 100;\n    font-size: 30px;\n    padding-bottom: 30px;\n    padding-left: 4vw; }\n\n#techtable {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap;\n  -webkit-box-align: start;\n      -ms-flex-align: start;\n          align-items: flex-start;\n  padding: 0 3vw 30px 3vw; }\n\n#techtable > * {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 0 auto;\n          flex: 1 0 auto;\n  min-width: 200px; }\n\n#sub-note {\n  font-size: 8px; }\n\n.header-text {\n  padding: 10px;\n  margin: 10px;\n  background-color: #20C20E;\n  color: white;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.skill {\n  padding: 10px;\n  margin: 10px;\n  background-color: white;\n  color: black;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.faded {\n  opacity: 1; }\n\n.app {\n  width: 100vw;\n  height: 100vh;\n  padding: 0;\n  margin: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap; }\n\n#menu {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 1 auto;\n          flex: 0 1 auto;\n  margin: 0;\n  width: 350px;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 1; }\n\n#menu-on {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 1 auto;\n          flex: 0 1 auto;\n  margin: 0;\n  width: 350px;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 1; }\n\n#menu-controller {\n  display: none; }\n\n#view {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 1 auto;\n          flex: 1 1 auto;\n  width: 300px;\n  margin: 0;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 0; }\n\n.submit-button {\n  border: 0px;\n  background-color: white;\n  color: black;\n  padding: 8px;\n  margin: 16px;\n  cursor: pointer; }\n  .submit-button:active {\n    background-color: #1976D2; }\n\n.menuitem {\n  width: 200px;\n  cursor: pointer;\n  background-color: white;\n  color: black;\n  display: block;\n  padding: 10px;\n  margin: 10px auto 10px auto; }\n  .menuitem:hover {\n    text-decoration: underline; }\n\n.header-image {\n  border-radius: 100px;\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n  display: block;\n  margin: 0 auto 0 auto;\n  -ms-interpolation-mode: nearest-neighbor;\n      image-rendering: -webkit-optimize-contrast;\n      image-rendering: -moz-crisp-edges;\n      image-rendering: pixelated; }\n\n.label-text {\n  font-size: 10px;\n  text-align: center; }\n\n.created-with {\n  padding-left: 77px;\n  font-size: 10px;\n  font-align: left; }\n\n.spacer {\n  margin-top: 40px; }\n\n.icons {\n  fill: white; }\n\n#chart3 {\n  width: 300px;\n  margin: 0 auto 30px auto; }\n\n#blink {\n  opacity: 0;\n  -webkit-animation: cursor 1s infinite;\n          animation: cursor 1s infinite; }\n\n#highlight {\n  background-color: #20C20E; }\n\n@-webkit-keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n.icons {\n  cursor: pointer; }\n\n/* Small Device Rendering */\n@media screen and (max-width: 850px) {\n  #menu {\n    position: absolute;\n    width: 100vw;\n    opacity: 0;\n    z-index: -1; }\n  .faded {\n    opacity: 0.1; }\n  #menu-on {\n    position: absolute;\n    width: 100vw;\n    opacity: 1;\n    z-index: 2;\n    left: 0;\n    background-color: rgba(0, 0, 0, 0.9);\n    -webkit-animation: menu-in 0.5s;\n            animation: menu-in 0.5s; }\n  #menu-controller {\n    z-index: 2;\n    font-size: 25px;\n    display: block;\n    padding: 20px;\n    width: 100vw; }\n  @-webkit-keyframes menu-in {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 100; } }\n  @keyframes menu-in {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 100; } }\n  @-webkit-keyframes menu-out {\n    0% {\n      left: 0; }\n    100% {\n      left: -100vw; } }\n  @keyframes menu-out {\n    0% {\n      left: 0; }\n    100% {\n      left: -100vw; } } }\n", ""]);
+	exports.push([module.id, "body {\n  padding: 0;\n  margin: 0;\n  background-color: black;\n  font-family: Lucida Console, Monaco, monospace;\n  overflow-x: hidden; }\n\na:link {\n  color: inherit;\n  text-decoration: none; }\n\na:visited {\n  color: inherit;\n  text-decoration: none; }\n\n#react-container {\n  margin: 0;\n  padding: 0;\n  color: white; }\n  #react-container h1 {\n    font-family: inherit;\n    font-size: 45px;\n    font-style: bold;\n    margin: 0;\n    padding-left: 4vw;\n    padding-bottom: 30px; }\n  #react-container h2 {\n    font-family: inherit;\n    font-weight: 100;\n    font-size: 30px;\n    padding-bottom: 30px;\n    padding-left: 4vw; }\n\n#techtable {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap;\n  -webkit-box-align: start;\n      -ms-flex-align: start;\n          align-items: flex-start;\n  padding: 0 3vw 30px 3vw; }\n\n#techtable > * {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 0 auto;\n          flex: 1 0 auto;\n  min-width: 200px; }\n\n#sub-note {\n  font-size: 8px; }\n\n.header-text {\n  padding: 10px;\n  margin: 10px;\n  background-color: #20C20E;\n  color: white;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.skill {\n  padding: 10px;\n  margin: 10px;\n  background-color: white;\n  color: black;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.faded {\n  opacity: 1; }\n\n.app {\n  width: 100vw;\n  height: 100vh;\n  padding: 0;\n  margin: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap; }\n\n#menu {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 1 auto;\n          flex: 0 1 auto;\n  margin: 0;\n  width: 350px;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 1; }\n\n#menu-on {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 1 auto;\n          flex: 0 1 auto;\n  margin: 0;\n  width: 350px;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 1; }\n\n#menu-controller {\n  display: none; }\n\n#view {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 1 auto;\n          flex: 1 1 auto;\n  width: 300px;\n  margin: 0;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 0; }\n\n.submit-button {\n  border: 0px;\n  background-color: white;\n  color: black;\n  padding: 8px;\n  margin: 16px;\n  cursor: pointer; }\n  .submit-button:active {\n    background-color: #1976D2; }\n\n.menuitem {\n  width: 200px;\n  cursor: pointer;\n  background-color: white;\n  color: black;\n  display: block;\n  padding: 10px;\n  margin: 10px auto 10px auto; }\n  .menuitem:hover {\n    text-decoration: underline; }\n\n.header-image {\n  border-radius: 100px;\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n  display: block;\n  margin: 0 auto 0 auto;\n  -ms-interpolation-mode: nearest-neighbor;\n      image-rendering: -webkit-optimize-contrast;\n      image-rendering: -moz-crisp-edges;\n      image-rendering: pixelated; }\n\n.label-text {\n  font-size: 10px;\n  text-align: center; }\n\n.created-with {\n  padding-left: 77px;\n  font-size: 10px;\n  font-align: left; }\n\n.spacer {\n  margin-top: 40px; }\n\n.icons {\n  fill: white; }\n\n#chart3 {\n  width: 300px;\n  margin: 0 auto 30px auto; }\n\n#blink {\n  opacity: 0;\n  -webkit-animation: cursor 1s infinite;\n          animation: cursor 1s infinite; }\n\n#highlight {\n  background-color: #20C20E; }\n\n@-webkit-keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n#work {\n  text-align: center; }\n\n.icons {\n  cursor: pointer; }\n\n.tag-on {\n  padding: 10px;\n  background-color: #20C20E;\n  color: white;\n  cursor: pointer;\n  margin: 3px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none; }\n\n.tag-off {\n  padding: 10px;\n  background-color: #20C20E;\n  color: grey;\n  margin: 3px;\n  cursor: pointer;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none; }\n\n.project {\n  width: 300px;\n  padding: 0;\n  -webkit-box-flex: 1;\n      -ms-flex: 1 1 auto;\n          flex: 1 1 auto; }\n\n.shadow {\n  background-color: rgba(0, 0, 0, 0.6);\n  margin: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: column wrap;\n          flex-flow: column wrap;\n  cursor: pointer;\n  width: 100%;\n  height: 300px; }\n\n.shadow:hover {\n  background-color: rgba(0, 0, 0, 0.3); }\n\n.shadow > * {\n  margin: auto;\n  padding-left: 20px;\n  padding-right: 20px;\n  background-color: black; }\n\n#project-container {\n  color: white;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap;\n  margin: 80px 0 80px 0; }\n\n/* Small Device Rendering */\n@media screen and (max-width: 850px) {\n  #menu {\n    position: absolute;\n    width: 100vw;\n    opacity: 0;\n    z-index: -1; }\n  .faded {\n    opacity: 0.1; }\n  #menu-on {\n    position: absolute;\n    width: 100vw;\n    opacity: 1;\n    z-index: 2;\n    left: 0;\n    background-color: rgba(0, 0, 0, 0.9);\n    -webkit-animation: menu-in 0.5s;\n            animation: menu-in 0.5s; }\n  #menu-controller {\n    z-index: 2;\n    font-size: 25px;\n    display: block;\n    padding: 20px;\n    width: 100vw; }\n  @-webkit-keyframes menu-in {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 100; } }\n  @keyframes menu-in {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 100; } }\n  @-webkit-keyframes menu-out {\n    0% {\n      left: 0; }\n    100% {\n      left: -100vw; } }\n  @keyframes menu-out {\n    0% {\n      left: 0; }\n    100% {\n      left: -100vw; } } }\n", ""]);
 
 	// exports
 
