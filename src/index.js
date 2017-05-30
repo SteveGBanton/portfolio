@@ -32,17 +32,17 @@ const forceLayout = () => {
           {
               "title": "Github",
               "code": "\uf09b",
-              "link": "http://github.com"
+              "link": "https://github.com/SteveGBanton"
           },
           {
               "title": "Facebook",
               "code": "\uf230",
-              "link": "http://facebook.com"
+              "link": "https://www.facebook.com/steve.banton"
           },
           {
               "title": "Twitter",
               "code": "\uf099",
-              "link": "http://twitter.com"
+              "link": "https://twitter.com/SteveGBanton"
           }
       ];
 
@@ -111,8 +111,7 @@ const forceLayout = () => {
 
         //Add tooltip
       node.on('mouseover', function(d, i) {
-              d3.select('text')
-                  .classed('highlight', true)
+
 
               tooltip.transition()
                   .style('opacity', '1')
@@ -125,8 +124,7 @@ const forceLayout = () => {
               return tooltip.style("top", (d3.event.pageY - 30) + "px").style("left", (d3.event.pageX + 8) + "px");
           })
           .on('mouseout', function(d, i) {
-              d3.select(this).select('image')
-                  .classed('highlight', false)
+
 
                tooltip.transition().style('opacity', '0')
           })
@@ -189,8 +187,16 @@ const forceLayout = () => {
 
 const defaultData = {
   current: 'home', //second field: editing on or off
-  tags: [['react', 'on'],['redux','on'],['d3', 'on']],
+  tags: [['react', 'on'],['redux','on'],['d3', 'on'],['jQuery', 'on']],
   projects: [
+    {
+      title: "BoldPointStudio.com",
+      image: "./images/portfolio/boldpoint.jpg",
+      description: "Responsive single page website for Boldpoint Studio, a design and marketing firm based in Toronto.",
+      tags: ['jQuery'],
+      link: "http://www.boldpointstudio.com",
+      github: ""
+    },
     {
       title: "Recipe Box",
       image: "./images/portfolio/recipe.jpg",
@@ -202,7 +208,7 @@ const defaultData = {
     {
       title: "Graph Of Countries That Share A Border",
       image: "./images/portfolio/force-directed.jpg",
-      description: "A D3.js force directed graph of states that share a land or water border.",
+      description: "A D3.js force directed graph of states that share a land or water border. WARNING: Slow on most mobile devices.",
       tags: ['d3'],
       link: "https://codepen.io/stevesacct/pen/RpMQeB",
       github: ""
@@ -240,11 +246,10 @@ const current = (state=['home'], action) => {
   }
 }
 
-const menuDisplayed = (state=['react','redux','d3'], action) => {
+const menuDisplayed = (state=[false], action) => {
 
-  if (action.type === C.ADD_TAG) {
-    let hasTag = state.some(item => item === action.payload)
-    return (hasTag) ? state : [...state, action.payload]
+  if (action.type === C.MENU_DISPLAYED) {
+    return action.payload
   } else if (action.type === C.SCREEN_DISPLAYED) {
     return false
   } else {
@@ -359,7 +364,7 @@ const Home = ({  }) => {
   return (
     <div id='about' className='display'>
 
-      <h1>Hi, Im <span id='highlight'>Steve Banton</span>.
+      <h1>Hi, Im <span className='highlight'>Steve Banton</span>.
 
       I build JavaScript applications for desktop and mobile.</h1>
 
@@ -537,23 +542,30 @@ const Menu = ( { menu } ) => {
       <div id="menu-container">
         {menu == true ? fadeOn() : ''}
 
-        <div id="menu-controller" onClick={() => {
+        <div id="menu-controller">
+
+        {menu==true?<i className="fa fa-times" aria-hidden="true" onClick={() => {
 
         store.dispatch(
           changeMenuDisplay(!(store.getState().menuDisplayed))
         );
         fadeOff()
 
-        }}>
+        }}></i>:<i className="fa fa-bars" aria-hidden="true" onClick={() => {
 
-        {menu==true?<i className="fa fa-times" aria-hidden="true"></i>:<i className="fa fa-bars" aria-hidden="true"></i>}
+        store.dispatch(
+          changeMenuDisplay(!(store.getState().menuDisplayed))
+        );
+        fadeOff()
+
+        }}></i>}
         </div>
 
   			<div id={menu == true ? "menu-on" : "menu"}>
 
           <img className='header-image' src='./images/steve.png' width='150' />
 
-          <p className='label-text'>Steve Banton</p>
+          <p className='label-text'><span className='highlight'>Steve Banton</span></p>
           <p className='label-text'>Full Stack Web & Mobile Developer</p>
 
           <p className='spacer'></p>
