@@ -43,6 +43,11 @@ const forceLayout = () => {
               "title": "Twitter",
               "code": "\uf099",
               "link": "https://twitter.com/SteveGBanton"
+          },
+          {
+              "title": "LinkedIn",
+              "code": "\uf08c",
+              "link": "https://www.linkedin.com/in/steve-banton-72971a71/"
           }
       ];
 
@@ -59,9 +64,18 @@ const forceLayout = () => {
               "target": 2,
               "source": 3
           },
-        {
+          {
+              "target": 4,
+              "source": 0
+          },
+          {
               "target": 3,
               "source": 0
+          }
+          ,
+          {
+              "target": 4,
+              "source": 1
           }
       ]
 
@@ -74,7 +88,7 @@ const forceLayout = () => {
       //start simulation
       var simulation = d3.forceSimulation()
           .nodes(nodes)
-          .force("link", d3.forceLink(links).distance(90))
+          .force("link", d3.forceLink(links).distance(50))
           .force("collide", d3.forceCollide(20))
           .force('charge', d3.forceManyBody().strength(-100))
           .force("center", d3.forceCenter(width / 2, height / 2))
@@ -195,23 +209,23 @@ const defaultData = {
       description: "Responsive single page website for Boldpoint Studio, a design and marketing firm based in Toronto.",
       tags: ['jQuery'],
       link: "http://www.boldpointstudio.com",
-      github: ""
+      github: "http://github.com"
     },
     {
       title: "Recipe Box",
       image: "./images/portfolio/recipe.jpg",
-      description: "An editable recipe box created with React and Redux and Material Design. Add and edit recipes, with functionality to add and delete ingredients one by one.",
+      description: "An editable recipe box created with React, Redux and Material Design. Add and edit recipes, with functionality to quickly add and delete ingredients one by one.",
       tags: ['react','redux'],
       link: "https://codepen.io/stevesacct/pen/NjGxeL",
-      github: ""
+      github: "http://github.com"
     },
     {
-      title: "Graph Of Countries That Share A Border",
+      title: "Animated Graph: All Countries Sharing A Border",
       image: "./images/portfolio/force-directed.jpg",
       description: "A D3.js force directed graph of states that share a land or water border. WARNING: Slow on most mobile devices.",
       tags: ['d3'],
       link: "https://codepen.io/stevesacct/pen/RpMQeB",
-      github: ""
+      github: "http://github.com"
     }
   ],
   menuDisplayed: false
@@ -443,7 +457,7 @@ const tagIntersection = (stateTags, projectTags) => {
 		return (
 			<div id='work' className='display'>
 
-        {tags.map((item, index, allTags) => {
+        Filter: {tags.map((item, index, allTags) => {
           return <Tag tag={item} key={index} allTags={allTags}/>
         })}
         <div id='project-container'>
@@ -494,13 +508,13 @@ const cssStyle = () => {
 			<div className='project' style={cssStyle()}>
         <a href={project.link} target='_blank'>
         <div className='shadow'>
-            <div>{project['title']}</div>
+            <div className='project-title'>{project['title']}</div>
             <div>{project['description']}</div>
-            <div>{project['github']}</div>
             <div>Libraries: {project['tags'].map((item) => {
               return item + " "
             })}</div>
-            <div>Click to view live project.</div>
+            <div>Click to view live project.<a href={project['github']} target='_blank'>
+              <i className='fa fa-github github-link' aria-hidden='true'></i></a></div>
         </div>
         </a>
       </div>
@@ -514,7 +528,9 @@ const Contact = ({  }) => {
 
       <h1>Contact</h1>
 
-<p>Have a web project</p>
+<p>Have a web project or a job opportunity?</p>
+
+<p>Please get in touch via email at steve.g.banton(-at-)gmail.com.</p>
 
 
     </div>
@@ -544,14 +560,14 @@ const Menu = ( { menu } ) => {
 
         <div id="menu-controller">
 
-        {menu==true?<i className="fa fa-times" aria-hidden="true" onClick={() => {
+        {menu==true?<i className="fa fa-times menu-button" aria-hidden="true" onClick={() => {
 
         store.dispatch(
           changeMenuDisplay(!(store.getState().menuDisplayed))
         );
         fadeOff()
 
-        }}></i>:<i className="fa fa-bars" aria-hidden="true" onClick={() => {
+        }}></i>:<i className="fa fa-bars menu-button" aria-hidden="true" onClick={() => {
 
         store.dispatch(
           changeMenuDisplay(!(store.getState().menuDisplayed))

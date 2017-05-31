@@ -99,6 +99,10 @@
 	    "title": "Twitter",
 	    "code": '\uF099',
 	    "link": "https://twitter.com/SteveGBanton"
+	  }, {
+	    "title": "LinkedIn",
+	    "code": '\uF08C',
+	    "link": "https://www.linkedin.com/in/steve-banton-72971a71/"
 	  }];
 
 	  var links = [{
@@ -111,14 +115,20 @@
 	    "target": 2,
 	    "source": 3
 	  }, {
+	    "target": 4,
+	    "source": 0
+	  }, {
 	    "target": 3,
 	    "source": 0
+	  }, {
+	    "target": 4,
+	    "source": 1
 	  }];
 
 	  var myChart = d3.select("#chart3").append('svg').attr('width', width).attr('height', height);
 
 	  //start simulation
-	  var simulation = d3.forceSimulation().nodes(nodes).force("link", d3.forceLink(links).distance(90)).force("collide", d3.forceCollide(20)).force('charge', d3.forceManyBody().strength(-100)).force("center", d3.forceCenter(width / 2, height / 2)).alpha(0.1);
+	  var simulation = d3.forceSimulation().nodes(nodes).force("link", d3.forceLink(links).distance(50)).force("collide", d3.forceCollide(20)).force('charge', d3.forceManyBody().strength(-100)).force("center", d3.forceCenter(width / 2, height / 2)).alpha(0.1);
 
 	  //add links
 	  var link = myChart.selectAll('line').data(links).enter().append('line').attr('stroke-dasharray', '2, 2').attr('stroke', 'white').attr('opacity', '0.3');
@@ -197,21 +207,21 @@
 	    description: "Responsive single page website for Boldpoint Studio, a design and marketing firm based in Toronto.",
 	    tags: ['jQuery'],
 	    link: "http://www.boldpointstudio.com",
-	    github: ""
+	    github: "http://github.com"
 	  }, {
 	    title: "Recipe Box",
 	    image: "./images/portfolio/recipe.jpg",
-	    description: "An editable recipe box created with React and Redux and Material Design. Add and edit recipes, with functionality to add and delete ingredients one by one.",
+	    description: "An editable recipe box created with React, Redux and Material Design. Add and edit recipes, with functionality to quickly add and delete ingredients one by one.",
 	    tags: ['react', 'redux'],
 	    link: "https://codepen.io/stevesacct/pen/NjGxeL",
-	    github: ""
+	    github: "http://github.com"
 	  }, {
-	    title: "Graph Of Countries That Share A Border",
+	    title: "Animated Graph: All Countries Sharing A Border",
 	    image: "./images/portfolio/force-directed.jpg",
 	    description: "A D3.js force directed graph of states that share a land or water border. WARNING: Slow on most mobile devices.",
 	    tags: ['d3'],
 	    link: "https://codepen.io/stevesacct/pen/RpMQeB",
-	    github: ""
+	    github: "http://github.com"
 	  }],
 	  menuDisplayed: false
 	};
@@ -539,6 +549,7 @@
 	  return _react2.default.createElement(
 	    'div',
 	    { id: 'work', className: 'display' },
+	    'Filter: ',
 	    tags.map(function (item, index, allTags) {
 	      return _react2.default.createElement(Tag, { tag: item, key: index, allTags: allTags });
 	    }),
@@ -593,18 +604,13 @@
 	        { className: 'shadow' },
 	        _react2.default.createElement(
 	          'div',
-	          null,
+	          { className: 'project-title' },
 	          project['title']
 	        ),
 	        _react2.default.createElement(
 	          'div',
 	          null,
 	          project['description']
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          project['github']
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -617,7 +623,12 @@
 	        _react2.default.createElement(
 	          'div',
 	          null,
-	          'Click to view live project.'
+	          'Click to view live project.',
+	          _react2.default.createElement(
+	            'a',
+	            { href: project['github'], target: '_blank' },
+	            _react2.default.createElement('i', { className: 'fa fa-github github-link', 'aria-hidden': 'true' })
+	          )
 	        )
 	      )
 	    )
@@ -638,7 +649,12 @@
 	    _react2.default.createElement(
 	      'p',
 	      null,
-	      'Have a web project'
+	      'Have a web project or a job opportunity?'
+	    ),
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      'Please get in touch via email at steve.g.banton(-at-)gmail.com.'
 	    )
 	  );
 	};
@@ -666,11 +682,11 @@
 	    _react2.default.createElement(
 	      'div',
 	      { id: 'menu-controller' },
-	      menu == true ? _react2.default.createElement('i', { className: 'fa fa-times', 'aria-hidden': 'true', onClick: function onClick() {
+	      menu == true ? _react2.default.createElement('i', { className: 'fa fa-times menu-button', 'aria-hidden': 'true', onClick: function onClick() {
 
 	          store.dispatch(changeMenuDisplay(!store.getState().menuDisplayed));
 	          fadeOff();
-	        } }) : _react2.default.createElement('i', { className: 'fa fa-bars', 'aria-hidden': 'true', onClick: function onClick() {
+	        } }) : _react2.default.createElement('i', { className: 'fa fa-bars menu-button', 'aria-hidden': 'true', onClick: function onClick() {
 
 	          store.dispatch(changeMenuDisplay(!store.getState().menuDisplayed));
 	          fadeOff();
@@ -22643,7 +22659,7 @@
 
 
 	// module
-	exports.push([module.id, "body {\n  padding: 0;\n  margin: 0;\n  background-color: black;\n  font-family: Lucida Console, Monaco, monospace;\n  overflow-x: hidden; }\n\na:link {\n  color: inherit;\n  text-decoration: none; }\n\na:visited {\n  color: inherit;\n  text-decoration: none; }\n\n#react-container {\n  margin: 0;\n  padding: 0;\n  color: white; }\n  #react-container h1 {\n    font-family: inherit;\n    font-size: 45px;\n    font-style: bold;\n    margin: 0;\n    padding-left: 4vw;\n    padding-bottom: 30px; }\n  #react-container h2 {\n    font-family: inherit;\n    font-weight: 100;\n    font-size: 30px;\n    padding-bottom: 30px;\n    padding-left: 4vw; }\n\n#techtable {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap;\n  -webkit-box-align: start;\n      -ms-flex-align: start;\n          align-items: flex-start;\n  padding: 0 3vw 30px 3vw; }\n\n#techtable > * {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 0 auto;\n          flex: 1 0 auto;\n  min-width: 200px; }\n\n#sub-note {\n  font-size: 8px; }\n\n.header-text {\n  padding: 10px;\n  margin: 10px;\n  background-color: #20C20E;\n  color: white;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.skill {\n  padding: 10px;\n  margin: 10px;\n  background-color: white;\n  color: black;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.faded {\n  opacity: 1; }\n\n.app {\n  width: 100vw;\n  height: 100vh;\n  padding: 0;\n  margin: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap; }\n\n#menu {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 1 auto;\n          flex: 0 1 auto;\n  margin: 0;\n  width: 350px;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 1; }\n\n#menu-on {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 1 auto;\n          flex: 0 1 auto;\n  margin: 0;\n  width: 350px;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 1; }\n\n#menu-controller {\n  display: none; }\n\n#view {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 1 auto;\n          flex: 1 1 auto;\n  width: 300px;\n  margin: 0;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 0; }\n\n.submit-button {\n  border: 0px;\n  background-color: white;\n  color: black;\n  padding: 8px;\n  margin: 16px;\n  cursor: pointer; }\n  .submit-button:active {\n    background-color: #1976D2; }\n\n.menuitem {\n  width: 200px;\n  cursor: pointer;\n  background-color: white;\n  color: black;\n  display: block;\n  padding: 10px;\n  margin: 10px auto 10px auto; }\n  .menuitem:hover {\n    background-color: #20C20E;\n    color: white; }\n\n.header-image {\n  border-radius: 100px;\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n  display: block;\n  margin: 0 auto 0 auto;\n  -ms-interpolation-mode: nearest-neighbor;\n      image-rendering: -webkit-optimize-contrast;\n      image-rendering: -moz-crisp-edges;\n      image-rendering: pixelated; }\n\n.label-text {\n  font-size: 10px;\n  text-align: center; }\n\n.created-with {\n  padding-left: 77px;\n  font-size: 10px;\n  font-align: left; }\n\n.spacer {\n  margin-top: 40px; }\n\n.icons {\n  fill: white; }\n\n#chart3 {\n  width: 300px;\n  margin: 0 auto 30px auto; }\n\n#blink {\n  opacity: 0;\n  -webkit-animation: cursor 1s infinite;\n          animation: cursor 1s infinite; }\n\n.highlight {\n  background-color: #20C20E; }\n\n@-webkit-keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n.icons {\n  cursor: pointer; }\n\n.tag-on {\n  padding: 10px;\n  background-color: #20C20E;\n  color: white;\n  cursor: pointer;\n  margin: 3px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none; }\n\n.tag-off {\n  padding: 10px;\n  background-color: #20C20E;\n  color: grey;\n  margin: 3px;\n  cursor: pointer;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none; }\n\n.project {\n  width: 300px;\n  padding: 0;\n  -webkit-box-flex: 1;\n      -ms-flex: 1 1 auto;\n          flex: 1 1 auto; }\n\n.shadow {\n  background-color: rgba(0, 0, 0, 0.6);\n  margin: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: column wrap;\n          flex-flow: column wrap;\n  cursor: pointer;\n  width: 100%;\n  height: 300px; }\n  .shadow:hover {\n    background-color: rgba(0, 0, 0, 0.3); }\n\n.shadow > * {\n  margin: auto;\n  padding-left: 20px;\n  padding-right: 20px;\n  background-color: black; }\n\n#project-container {\n  color: white;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap;\n  margin: 80px 0 80px 0; }\n\n/* Small Device Rendering */\n@media screen and (max-width: 850px) {\n  #menu {\n    position: absolute;\n    width: 100vw;\n    opacity: 0;\n    z-index: -1; }\n  .faded {\n    opacity: 0.1; }\n  #menu-on {\n    position: absolute;\n    width: 100vw;\n    opacity: 1;\n    z-index: 2;\n    left: 0;\n    background-color: rgba(0, 0, 0, 0.9);\n    -webkit-animation: menu-in 0.5s;\n            animation: menu-in 0.5s; }\n  #menu-controller {\n    z-index: 2;\n    font-size: 30px;\n    display: block;\n    padding: 20px;\n    width: 100vw; }\n  @-webkit-keyframes menu-in {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 100; } }\n  @keyframes menu-in {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 100; } }\n  @-webkit-keyframes menu-out {\n    0% {\n      left: 0; }\n    100% {\n      left: -100vw; } }\n  @keyframes menu-out {\n    0% {\n      left: 0; }\n    100% {\n      left: -100vw; } } }\n", ""]);
+	exports.push([module.id, "body {\n  padding: 0;\n  margin: 0;\n  background-color: black;\n  font-family: Lucida Console, Monaco, monospace;\n  overflow-x: hidden; }\n\na:link {\n  color: inherit;\n  text-decoration: none; }\n\na:visited {\n  color: inherit;\n  text-decoration: none; }\n\n#react-container {\n  margin: 0;\n  padding: 0;\n  color: white; }\n  #react-container h1 {\n    font-family: inherit;\n    font-size: 45px;\n    font-style: bold;\n    margin: 0;\n    padding-left: 4vw;\n    padding-bottom: 30px; }\n  #react-container h2 {\n    font-family: inherit;\n    font-weight: 100;\n    font-size: 30px;\n    padding-bottom: 30px;\n    padding-left: 4vw; }\n\n#techtable {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap;\n  -webkit-box-align: start;\n      -ms-flex-align: start;\n          align-items: flex-start;\n  padding: 0 3vw 30px 3vw; }\n\n#techtable > * {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 0 auto;\n          flex: 1 0 auto;\n  min-width: 200px; }\n\n#sub-note {\n  font-size: 8px; }\n\n.header-text {\n  padding: 10px;\n  margin: 10px;\n  background-color: #20C20E;\n  color: white;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.skill {\n  padding: 10px;\n  margin: 10px;\n  background-color: white;\n  color: black;\n  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(255, 255, 255, 0.6); }\n\n.faded {\n  opacity: 1; }\n\n.app {\n  width: 100vw;\n  height: 100vh;\n  padding: 0;\n  margin: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap; }\n\n#menu {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 1 auto;\n          flex: 0 1 auto;\n  margin: 0;\n  width: 350px;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 1; }\n\n#menu-on {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 1 auto;\n          flex: 0 1 auto;\n  margin: 0;\n  width: 350px;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 1; }\n\n#menu-controller {\n  display: none; }\n\n#view {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 1 auto;\n          flex: 1 1 auto;\n  width: 300px;\n  margin: 0;\n  padding: 4vw;\n  background-color: #000;\n  z-index: 0; }\n\n.submit-button {\n  border: 0px;\n  background-color: white;\n  color: black;\n  padding: 8px;\n  margin: 16px;\n  cursor: pointer; }\n  .submit-button:active {\n    background-color: #1976D2; }\n\n.menuitem {\n  width: 200px;\n  cursor: pointer;\n  background-color: white;\n  color: black;\n  display: block;\n  padding: 10px;\n  margin: 10px auto 10px auto; }\n  .menuitem:hover {\n    background-color: #20C20E;\n    color: white; }\n\n.header-image {\n  border-radius: 100px;\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n  display: block;\n  margin: 0 auto 0 auto;\n  -ms-interpolation-mode: nearest-neighbor;\n      image-rendering: -webkit-optimize-contrast;\n      image-rendering: -moz-crisp-edges;\n      image-rendering: pixelated; }\n\n.label-text {\n  font-size: 10px;\n  text-align: center; }\n\n.created-with {\n  padding-left: 77px;\n  font-size: 10px;\n  font-align: left; }\n\n.spacer {\n  margin-top: 40px; }\n\n.icons {\n  fill: white; }\n\n#chart3 {\n  width: 300px;\n  margin: 0 auto 30px auto; }\n\n#blink {\n  opacity: 0;\n  -webkit-animation: cursor 1s infinite;\n          animation: cursor 1s infinite; }\n\n.highlight {\n  background-color: #20C20E; }\n\n@-webkit-keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@keyframes cursor {\n  0% {\n    opacity: 0; }\n  40% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  90% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n.icons {\n  cursor: pointer; }\n\n.tag-on {\n  padding: 10px;\n  background-color: #20C20E;\n  color: white;\n  cursor: pointer;\n  margin: 3px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none; }\n\n.tag-off {\n  padding: 10px;\n  background-color: #20C20E;\n  color: grey;\n  margin: 3px;\n  cursor: pointer;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none; }\n\n.project {\n  margin: 10px;\n  width: 300px;\n  padding: 0;\n  -webkit-box-flex: 1;\n      -ms-flex: 1 1 auto;\n          flex: 1 1 auto; }\n\n.shadow {\n  position: relative;\n  background-color: rgba(0, 0, 0, 0.6);\n  margin: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: column wrap;\n          flex-flow: column wrap;\n  cursor: pointer;\n  width: 100%;\n  height: 300px; }\n  .shadow:hover {\n    background-color: rgba(0, 0, 0, 0.3); }\n\n.shadow > * {\n  margin: auto;\n  padding: 4px 20px 4px 20px;\n  background-color: black; }\n\n.project-title {\n  background-color: #20C20E;\n  font-size: 25px; }\n\n.github-link {\n  background-color: transparent;\n  color: rgba(255, 255, 255, 0.7);\n  position: absolute;\n  bottom: 15px;\n  right: 15px;\n  font-size: 30px; }\n\n#project-container {\n  color: white;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap;\n  margin: 80px 0 80px 0; }\n\n/* Small Device Rendering */\n@media screen and (max-width: 850px) {\n  #menu {\n    position: absolute;\n    width: 93vw;\n    opacity: 0;\n    z-index: -1; }\n  .faded {\n    opacity: 0.1; }\n  #menu-on {\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n    position: absolute;\n    width: 93vw;\n    opacity: 1;\n    z-index: 2;\n    left: 0;\n    background-color: rgba(0, 0, 0, 0.9);\n    -webkit-animation: menu-in 0.5s;\n            animation: menu-in 0.5s; }\n  #menu-controller {\n    z-index: 2;\n    font-size: 30px;\n    display: block;\n    padding: 20px;\n    width: 100vw; }\n  .menu-button {\n    cursor: pointer; }\n  @-webkit-keyframes menu-in {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 100; } }\n  @keyframes menu-in {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 100; } }\n  @-webkit-keyframes menu-out {\n    0% {\n      left: 0; }\n    100% {\n      left: -100vw; } }\n  @keyframes menu-out {\n    0% {\n      left: 0; }\n    100% {\n      left: -100vw; } } }\n", ""]);
 
 	// exports
 

@@ -5,6 +5,7 @@ $green: #20C20E;
 //Main CSS
 //-----------
 
+
 body {
   padding: 0;
   margin: 0;
@@ -125,7 +126,6 @@ a:visited {
   z-index: 0;
 }
 
-
 .submit-button {
   border: 0px;
   background-color: white;
@@ -238,12 +238,14 @@ a:visited {
 }
 
 .project {
+  margin: 10px;
   width: 300px;
   padding: 0;
   flex: 1 1 auto;
 }
 
 .shadow {
+  position: relative;
   background-color: rgba(0,0,0,0.6);
   margin: 0;
   display: flex;
@@ -258,9 +260,22 @@ a:visited {
 
 .shadow > * {
   margin: auto;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 4px 20px 4px 20px;
   background-color: black;
+}
+
+.project-title {
+  background-color: $green;
+  font-size: 25px;
+}
+
+.github-link {
+  background-color: rgba(0,0,0,0);
+  color: rgba(255,255,255,0.7);
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  font-size: 30px;
 }
 
 #project-container {
@@ -281,7 +296,7 @@ a:visited {
 
   #menu {
     position: absolute;
-    width: 100vw;
+    width: 93vw;
     opacity: 0;
     z-index: -1;
   }
@@ -291,8 +306,9 @@ a:visited {
   }
 
   #menu-on {
+    user-select: none;
     position: absolute;
-    width: 100vw;
+    width: 93vw;
     opacity: 1;
     z-index: 2;
     left: 0;
@@ -306,6 +322,10 @@ a:visited {
     display: block;
     padding: 20px;
     width: 100vw;
+  }
+
+  .menu-button {
+    cursor: pointer;
   }
 
   @keyframes menu-in {
