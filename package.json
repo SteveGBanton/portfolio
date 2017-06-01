@@ -4,7 +4,7 @@
   "description": "Steve Banton's Portfolio",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/webpack"
+    "start": "./node_modules/.bin/webpack --watch"
   },
   "author": "Steve Banton",
   "license": "MIT",

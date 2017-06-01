@@ -75,122 +75,6 @@
 	var combineReducers = Redux.combineReducers,
 	    createStore = Redux.createStore;
 
-
-	var forceLayout = function forceLayout() {
-
-	  var width = 300,
-	      height = 150,
-	      circleWidth = 10,
-	      tooltip = d3.select('body').append('div').style('background', 'white').style('font-size', '10px').style('line-height', '100%').style('position', 'absolute').style('padding', '5px').style('border-radius', '3px').style('opacity', '0').style('z-index', '2');
-
-	  var nodes = [{
-	    "title": "Email",
-	    "code": '\uF0E0',
-	    "link": "mailto:contact@stevebanton.com"
-	  }, {
-	    "title": "Github",
-	    "code": '\uF09B',
-	    "link": "https://github.com/SteveGBanton"
-	  }, {
-	    "title": "Facebook",
-	    "code": '\uF230',
-	    "link": "https://www.facebook.com/steve.banton"
-	  }, {
-	    "title": "Twitter",
-	    "code": '\uF099',
-	    "link": "https://twitter.com/SteveGBanton"
-	  }, {
-	    "title": "LinkedIn",
-	    "code": '\uF08C',
-	    "link": "https://www.linkedin.com/in/steve-banton-72971a71/"
-	  }];
-
-	  var links = [{
-	    "target": 0,
-	    "source": 1
-	  }, {
-	    "target": 1,
-	    "source": 2
-	  }, {
-	    "target": 2,
-	    "source": 3
-	  }, {
-	    "target": 4,
-	    "source": 0
-	  }, {
-	    "target": 3,
-	    "source": 0
-	  }, {
-	    "target": 4,
-	    "source": 1
-	  }];
-
-	  var myChart = d3.select("#chart3").append('svg').attr('width', width).attr('height', height);
-
-	  //start simulation
-	  var simulation = d3.forceSimulation().nodes(nodes).force("link", d3.forceLink(links).distance(50)).force("collide", d3.forceCollide(20)).force('charge', d3.forceManyBody().strength(-100)).force("center", d3.forceCenter(width / 2, height / 2)).alpha(0.1);
-
-	  //add links
-	  var link = myChart.selectAll('line').data(links).enter().append('line').attr('stroke-dasharray', '2, 2').attr('stroke', 'white').attr('opacity', '0.3');
-
-	  //add notes
-	  var node = myChart.selectAll('circle').data(nodes).enter().append('g').call(d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended));
-
-	  //Add icon
-	  node.append('a').attr('href', function (d) {
-	    return d.link;
-	  }).attr('target', '_blank').append('text').attr('class', 'icons').attr('font-family', 'FontAwesome').attr('font-size', '30px').attr('transform', 'translate(-20,20)').text(function (d) {
-	    return d.code;
-	  });
-
-	  //Add tooltip
-	  node.on('mouseover', function (d, i) {
-
-	    tooltip.transition().style('opacity', '1');
-	    tooltip.html(d['title']).style('left', d3.event.pageX + 8 + 'px').style('top', d3.event.pageY - 30 + 'px');
-	  }).on("mousemove", function () {
-	    return tooltip.style("top", d3.event.pageY - 30 + "px").style("left", d3.event.pageX + 8 + "px");
-	  }).on('mouseout', function (d, i) {
-
-	    tooltip.transition().style('opacity', '0');
-	  });
-
-	  //animate as simulation progresses
-	  simulation.on('tick', function (e) {
-	    node.attr('transform', function (d, i) {
-	      return 'translate(' + d.x + ', ' + d.y + ')';
-	    });
-
-	    link.attr('x1', function (d) {
-	      return d.source.x;
-	    }).attr('y1', function (d) {
-	      return d.source.y;
-	    }).attr('x2', function (d) {
-	      return d.target.x;
-	    }).attr('y2', function (d) {
-	      return d.target.y;
-	    });
-	  });
-
-	  //dragging
-	  function dragstarted(d) {
-	    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-	    d.fx = d.x;
-	    d.fy = d.y;
-	  }
-
-	  function dragged(d) {
-	    d.fx = d3.event.x;
-	    d.fy = d3.event.y;
-	  }
-
-	  function dragended(d) {
-	    if (!d3.event.active) simulation.alphaTarget(0);
-	    d.fx = null;
-	    d.fy = null;
-	  }
-	};
-
 	//==============================//
 	//Loading of Intital State
 	//Default data used if nothing in localStorage
@@ -200,12 +84,12 @@
 
 	var defaultData = {
 	  current: 'home', //second field: editing on or off
-	  tags: [['react', 'on'], ['redux', 'on'], ['d3', 'on'], ['jQuery', 'on']],
+	  tags: [['react', 'on'], ['redux', 'on'], ['d3', 'on'], ['jquery', 'on'], ['node', 'on'], ['express', 'on'], ['wordpress', 'on']],
 	  projects: [{
 	    title: "BoldPointStudio.com",
 	    image: "./images/portfolio/boldpoint.jpg",
-	    description: "Responsive single page website for Boldpoint Studio, a design and marketing firm based in Toronto.",
-	    tags: ['jQuery'],
+	    description: "Responsive single page website for Boldpoint Studio, a design and marketing firm based in Toronto. Website built from scratch using only jQuery.",
+	    tags: ['jquery'],
 	    link: "http://www.boldpointstudio.com",
 	    github: "http://github.com"
 	  }, {
@@ -216,12 +100,89 @@
 	    link: "https://codepen.io/stevesacct/pen/NjGxeL",
 	    github: "http://github.com"
 	  }, {
-	    title: "Animated Graph: All Countries Sharing A Border",
+	    title: "Animated Link Graph: All Countries Sharing A Border",
 	    image: "./images/portfolio/force-directed.jpg",
 	    description: "A D3.js force directed graph of states that share a land or water border. WARNING: Slow on most mobile devices.",
 	    tags: ['d3'],
 	    link: "https://codepen.io/stevesacct/pen/RpMQeB",
 	    github: "http://github.com"
+	  }, {
+	    title: "Instant Markdown Previewer",
+	    image: "./images/portfolio/markdown.jpg",
+	    description: "An instant markdown previewer built in React.js. When you type markdown, the formatted version is instantly printed to the screen.",
+	    tags: ['d3'],
+	    link: "https://codepen.io/stevesacct/pen/RpMQeB",
+	    github: "http://github.com"
+	  }, {
+	    title: "Reusable Table Sort: Camper Leaderboard",
+	    image: "./images/portfolio/table-sort.jpg",
+	    description: "A sortable table built in React.js.",
+	    tags: ['react'],
+	    link: "https://codepen.io/stevesacct/pen/RpMQeB",
+	    github: "http://github.com"
+	  }, {
+	    title: "Responsive Simon Game",
+	    image: "./images/portfolio/force-directed.jpg",
+	    description: "A Simon game built using jQuery and the AudioContext API for button tones.",
+	    tags: ['jquery'],
+	    link: "https://codepen.io/stevesacct/pen/RpMQeB",
+	    github: "http://github.com"
+	  }, {
+	    title: "Wikipedia Search Page",
+	    image: "./images/portfolio/wikipedia.jpg",
+	    description: "A Wikipedia search page that uses the Wikipedia API to call search results before leaving the site.",
+	    tags: ['jquery'],
+	    link: "https://codepen.io/stevesacct/pen/RpMQeB",
+	    github: "http://github.com"
+	  }, {
+	    title: "Heatmap Graph: Global Land Surface Temperatures",
+	    image: "./images/portfolio/heatmap.jpg",
+	    description: "An reuasable, animated D3.js heatmap graph of monthly land surface temperature data graphed from 1753 - 2015, with data tooltip on hover.",
+	    tags: ['d3'],
+	    link: "https://codepen.io/stevesacct/pen/PpQXzm",
+	    github: "http://github.com"
+	  }, {
+	    title: "Dynamic Bar Graph: US GDP By Quarter",
+	    image: "./images/portfolio/force-directed.jpg",
+	    description: "An reuasable, animated D3.js bar graph of the US GDP by quarter since 1947, with data tooltip on hover.",
+	    tags: ['d3'],
+	    link: "https://codepen.io/stevesacct/pen/RpMQeB",
+	    github: "http://github.com"
+	  }, {
+	    title: "Pomodoro Clock",
+	    image: "./images/portfolio/pomodoro.jpg",
+	    description: "A simple pomodoro clock that allows you to add minutes on the fly.",
+	    tags: ['jquery'],
+	    link: "https://codepen.io/stevesacct/pen/RpMQeB",
+	    github: "http://github.com"
+	  }, {
+	    title: "Dynamic Scatterplot Graph: Doping in Pro Cycling",
+	    image: "./images/portfolio/pomodoro.jpg",
+	    description: "An reuasable, animated D3.js scatterplot graph of doping in pro cycling, with tooltip on hover.",
+	    tags: ['d3'],
+	    link: "https://codepen.io/stevesacct/pen/RpMQeB",
+	    github: "http://github.com"
+	  }, {
+	    title: "Reuable Vector Map: Meteorite Landings Mapped",
+	    image: "./images/portfolio/pomodoro.jpg",
+	    description: "A visualization of all meteorites that have every been recorded, mapped to their landing location. Zoomable map & tooltip on hover shows extra data about each meteorite.",
+	    tags: ['d3'],
+	    link: "https://codepen.io/stevesacct/pen/RpMQeB",
+	    github: "http://github.com"
+	  }, {
+	    title: "Timestamp Service",
+	    image: "./images/portfolio/timestamp.jpg",
+	    description: "A simple timestamp service that returns a time in unix and standard format when either are supplied.",
+	    tags: ['node', 'express'],
+	    link: "https://simple-timestamp-service.herokuapp.com/2147483647",
+	    github: "https://github.com/SteveGBanton/timestamp-service"
+	  }, {
+	    title: "AlbionLandscaping.Net",
+	    image: "./images/portfolio/timestamp.jpg",
+	    description: "A website for a local landscaping business in the Toronto area, built using Wordpress.",
+	    tags: ['wordpress'],
+	    link: "https://simple-timestamp-service.herokuapp.com/2147483647",
+	    github: "https://github.com/SteveGBanton/timestamp-service"
 	  }],
 	  menuDisplayed: false
 	};
@@ -549,7 +510,11 @@
 	  return _react2.default.createElement(
 	    'div',
 	    { id: 'work', className: 'display' },
-	    'Filter: ',
+	    _react2.default.createElement(
+	      'span',
+	      null,
+	      'Filter: '
+	    ),
 	    tags.map(function (item, index, allTags) {
 	      return _react2.default.createElement(Tag, { tag: item, key: index, allTags: allTags });
 	    }),
@@ -623,7 +588,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          null,
-	          'Click to view live project.',
+	          'Click for live project.',
 	          _react2.default.createElement(
 	            'a',
 	            { href: project['github'], target: '_blank' },
@@ -857,6 +822,127 @@
 
 
 	(0, _reactDom.render)(_react2.default.createElement(App, null), document.getElementById('react-container'));
+
+	var forceLayout = function forceLayout() {
+
+	  var width = 300,
+	      height = 150,
+	      circleWidth = 10,
+	      tooltip = d3.select('body').append('div').style('background', 'white').style('font-size', '10px').style('line-height', '100%').style('position', 'absolute').style('padding', '5px').style('border-radius', '3px').style('opacity', '0').style('z-index', '2');
+
+	  var nodes = [{
+	    "title": "Email",
+	    "code": '\uF0E0',
+	    "link": "mailto:contact@stevebanton.com"
+	  }, {
+	    "title": "Github",
+	    "code": '\uF09B',
+	    "link": "https://github.com/SteveGBanton"
+	  }, {
+	    "title": "Facebook",
+	    "code": '\uF230',
+	    "link": "https://www.facebook.com/steve.banton"
+	  }, {
+	    "title": "Twitter",
+	    "code": '\uF099',
+	    "link": "https://twitter.com/SteveGBanton"
+	  }, {
+	    "title": "LinkedIn",
+	    "code": '\uF08C',
+	    "link": "https://www.linkedin.com/in/steve-banton-72971a71/"
+	  }];
+
+	  var links = [{
+	    "target": 0,
+	    "source": 1
+	  }, {
+	    "target": 1,
+	    "source": 2
+	  }, {
+	    "target": 2,
+	    "source": 3
+	  }, {
+	    "target": 4,
+	    "source": 0
+	  }, {
+	    "target": 3,
+	    "source": 0
+	  }, {
+	    "target": 4,
+	    "source": 1
+	  }];
+
+	  var myChart = d3.select("#chart3").append('svg').attr('width', width).attr('height', height);
+
+	  //start simulation
+	  var simulation = d3.forceSimulation().nodes(nodes).force("link", d3.forceLink(links).distance(50)).force("collide", d3.forceCollide(20)).force('charge', d3.forceManyBody().strength(-100)).force("center", d3.forceCenter(width / 2, height / 2)).alpha(0.1);
+
+	  //add links
+	  var link = myChart.selectAll('line').data(links).enter().append('line').attr('stroke-dasharray', '2, 2').attr('stroke', 'white').attr('opacity', '0.3');
+
+	  //add notes
+	  var node = myChart.selectAll('circle').data(nodes).enter().append('g').call(d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended));
+
+	  //Add icon
+	  node.append('a').attr('href', function (d) {
+	    return d.link;
+	  }).attr('target', '_blank').append('text').attr('class', 'icons').attr('font-family', 'FontAwesome').attr('font-size', '30px').attr('transform', 'translate(-20,20)').text(function (d) {
+	    return d.code;
+	  });
+
+	  //Add tooltip
+	  node.on('mouseover', function (d, i) {
+
+	    tooltip.transition().style('opacity', '1');
+	    tooltip.html(d['title']).style('left', d3.event.pageX + 8 + 'px').style('top', d3.event.pageY - 30 + 'px');
+	  }).on("mousemove", function () {
+	    return tooltip.style("top", d3.event.pageY - 30 + "px").style("left", d3.event.pageX + 8 + "px");
+	  }).on('mouseout', function (d, i) {
+
+	    tooltip.transition().style('opacity', '0');
+	  });
+
+	  //animate as simulation progresses
+	  simulation.on('tick', function (e) {
+	    node.attr('transform', function (d, i) {
+	      return 'translate(' + d.x + ', ' + d.y + ')';
+	    });
+
+	    link.attr('x1', function (d) {
+	      return d.source.x;
+	    }).attr('y1', function (d) {
+	      return d.source.y;
+	    }).attr('x2', function (d) {
+	      return d.target.x;
+	    }).attr('y2', function (d) {
+	      return d.target.y;
+	    });
+	  });
+
+	  //dragging
+	  function dragstarted(d) {
+	    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+	    d.fx = d.x;
+	    d.fy = d.y;
+	  }
+
+	  function dragged(d) {
+	    d.fx = d3.event.x;
+	    d.fy = d3.event.y;
+	  }
+
+	  function dragended(d) {
+	    if (!d3.event.active) simulation.alphaTarget(0);
+	    d.fx = null;
+	    d.fy = null;
+	  }
+	};
+
+	//==============================//
+	//D3.js Force Directed Graph
+	//Display of social networks
+	//==============================//
+
 
 	forceLayout();
 
