@@ -25,111 +25,103 @@ const defaultData = {
       description: "Responsive single page website for Boldpoint Studio, a design and marketing firm based in Toronto. Website built from scratch using only jQuery.",
       tags: ['jquery'],
       link: "http://www.boldpointstudio.com",
-      github: "http://github.com"
+      github: "#"
     },
     {
       title: "Recipe Box",
       image: "./images/portfolio/recipe.jpg",
       description: "An editable recipe box created with React, Redux and Material Design. Add and edit recipes, with functionality to quickly add and delete ingredients one by one.",
       tags: ['react','redux'],
-      link: "https://codepen.io/stevesacct/pen/NjGxeL",
-      github: "http://github.com"
+      link: "http://stevebanton.com/recipe-box",
+      github: "https://github.com/SteveGBanton/recipe-box"
     },
     {
       title: "Animated Link Graph: All Countries Sharing A Border",
       image: "./images/portfolio/force-directed.jpg",
       description: "A D3.js force directed graph of states that share a land or water border. WARNING: Slow on most mobile devices.",
       tags: ['d3'],
-      link: "https://codepen.io/stevesacct/pen/RpMQeB",
-      github: "http://github.com"
+      link: "http://stevebanton.com/force-graph-countries",
+      github: "https://github.com/SteveGBanton/force-graph-countries"
     },
     {
       title: "Instant Markdown Previewer",
       image: "./images/portfolio/markdown.jpg",
       description: "An instant markdown previewer built in React.js. When you type markdown, the formatted version is instantly printed to the screen.",
       tags: ['d3'],
-      link: "https://codepen.io/stevesacct/pen/RpMQeB",
-      github: "http://github.com"
-    },
-    {
-      title: "Reusable Table Sort: Camper Leaderboard",
-      image: "./images/portfolio/table-sort.jpg",
-      description: "A sortable table built in React.js.",
-      tags: ['react'],
-      link: "https://codepen.io/stevesacct/pen/RpMQeB",
-      github: "http://github.com"
+      link: "http://stevebanton.com/markdown-previewer",
+      github: "https://github.com/SteveGBanton/markdown-previewer"
     },
     {
       title: "Responsive Simon Game",
-      image: "./images/portfolio/force-directed.jpg",
+      image: "./images/portfolio/simon.jpg",
       description: "A Simon game built using jQuery and the AudioContext API for button tones.",
       tags: ['jquery'],
-      link: "https://codepen.io/stevesacct/pen/RpMQeB",
-      github: "http://github.com"
+      link: "http://stevebanton.com/simon-responsive",
+      github: "https://github.com/SteveGBanton/simon-responsive"
     },
     {
       title: "Wikipedia Search Page",
       image: "./images/portfolio/wikipedia.jpg",
       description: "A Wikipedia search page that uses the Wikipedia API to call search results before leaving the site.",
       tags: ['jquery'],
-      link: "https://codepen.io/stevesacct/pen/RpMQeB",
-      github: "http://github.com"
+      link: "https://codepen.io/stevesacct/pen/OWdaGe",
+      github: "#"
     },
     {
       title: "Heatmap Graph: Global Land Surface Temperatures",
       image: "./images/portfolio/heatmap.jpg",
       description: "An reuasable, animated D3.js heatmap graph of monthly land surface temperature data graphed from 1753 - 2015, with data tooltip on hover.",
       tags: ['d3'],
-      link: "https://codepen.io/stevesacct/pen/PpQXzm",
-      github: "http://github.com"
+      link: "http://stevebanton.com/heatmaps-global-temps",
+      github: "https://github.com/SteveGBanton/heatmaps-global-temps"
     },
     {
       title: "Dynamic Bar Graph: US GDP By Quarter",
-      image: "./images/portfolio/force-directed.jpg",
+      image: "./images/portfolio/bar-graph.jpg",
       description: "An reuasable, animated D3.js bar graph of the US GDP by quarter since 1947, with data tooltip on hover.",
       tags: ['d3'],
-      link: "https://codepen.io/stevesacct/pen/RpMQeB",
-      github: "http://github.com"
+      link: "http://stevebanton.com/bar-graph-us-gdp",
+      github: "https://github.com/SteveGBanton/bar-graph-us-gdp"
     },
     {
       title: "Pomodoro Clock",
       image: "./images/portfolio/pomodoro.jpg",
       description: "A simple pomodoro clock that allows you to add minutes on the fly.",
       tags: ['jquery'],
-      link: "https://codepen.io/stevesacct/pen/RpMQeB",
-      github: "http://github.com"
+      link: "https://codepen.io/stevesacct/pen/jBqyOz",
+      github: "#"
     },
     {
       title: "Dynamic Scatterplot Graph: Doping in Pro Cycling",
-      image: "./images/portfolio/pomodoro.jpg",
+      image: "./images/portfolio/scatter.jpg",
       description: "An reuasable, animated D3.js scatterplot graph of doping in pro cycling, with tooltip on hover.",
       tags: ['d3'],
-      link: "https://codepen.io/stevesacct/pen/RpMQeB",
-      github: "http://github.com"
+      link: "http://stevebanton.com/scatterplot-cycling",
+      github: "https://github.com/SteveGBanton/scatterplot-cycling"
     },
     {
-      title: "Reuable Vector Map: Meteorite Landings Mapped",
-      image: "./images/portfolio/pomodoro.jpg",
+      title: "Reusable Vector Map: Meteorite Landings Mapped",
+      image: "./images/portfolio/world-map.jpg",
       description: "A visualization of all meteorites that have every been recorded, mapped to their landing location. Zoomable map & tooltip on hover shows extra data about each meteorite.",
       tags: ['d3'],
-      link: "https://codepen.io/stevesacct/pen/RpMQeB",
-      github: "http://github.com"
+      link: "http://stevebanton.com/world-plot",
+      github: "https://github.com/SteveGBanton/world-plot"
     },
     {
       title: "Timestamp Service",
       image: "./images/portfolio/timestamp.jpg",
       description: "A simple timestamp service that returns a time in unix and standard format when either are supplied.",
       tags: ['node', 'express'],
-      link: "https://simple-timestamp-service.herokuapp.com/2147483647",
+      link: "https://simple-timestamp-service.herokuapp.com/",
       github: "https://github.com/SteveGBanton/timestamp-service"
     },
     {
       title: "AlbionLandscaping.Net",
-      image: "./images/portfolio/timestamp.jpg",
+      image: "./images/portfolio/albion.jpg",
       description: "A website for a local landscaping business in the Toronto area, built using Wordpress.",
       tags: ['wordpress'],
-      link: "https://simple-timestamp-service.herokuapp.com/2147483647",
-      github: "https://github.com/SteveGBanton/timestamp-service"
+      link: "http://AlbionLandscaping.Net",
+      github: "#"
     }
   ],
   menuDisplayed: false
@@ -272,6 +264,36 @@ const removeTag = (tag) => {
   }
 }
 
+const tagsOn = (tag, allTags) => {
+
+  let newTags = allTags;
+
+  for (let i = 0;i<allTags.length;i++) {
+    newTags[i][1] = 'on';
+  }
+
+  return {
+    type: C.TAG_ON,
+    payload: newTags
+  }
+
+}
+
+const tagsOff = (tag, allTags) => {
+
+  let newTags = allTags;
+
+  for (let i = 0;i<allTags.length;i++) {
+    newTags[i][1] = 'off';
+  }
+
+  return {
+    type: C.TAG_OFF,
+    payload: newTags
+  }
+
+}
+
 
 //==============================//
 //REACT COMPONENTS
@@ -361,10 +383,38 @@ const tagIntersection = (stateTags, projectTags) => {
 		return (
 			<div id='work' className='display'>
 
-        <span>Filter: </span>
-        {tags.map((item, index, allTags) => {
-          return <Tag tag={item} key={index} allTags={allTags}/>
-        })}
+      <span className="tag-labels">Filter:</span>
+      <span className="tag-on" onClick={() => {
+
+        for (let i = 0; i < tags.length; i++) {
+
+          store.dispatch(
+            tagsOn(tags[i], tags)
+          );
+
+        }
+
+      }}>All</span>
+      <span className="tag-on" onClick={() => {
+
+        for (let i = 0; i < tags.length; i++) {
+
+          store.dispatch(
+            tagsOff(tags[i], tags)
+          );
+
+        }
+
+
+      }}>Clear</span>
+
+        <div id="tag-container">
+
+
+          {tags.map((item, index, allTags) => {
+            return <Tag tag={item} key={index} allTags={allTags}/>
+          })}
+        </div>
         <div id='project-container'>
         {
           projects.map((item, index) => {
@@ -411,17 +461,19 @@ const cssStyle = () => {
 }
 		return (
 			<div className='project' style={cssStyle()}>
-        <a href={project.link} target='_blank'>
+
         <div className='shadow'>
             <div className='project-title'>{project['title']}</div>
             <div>{project['description']}</div>
             <div>Libraries: {project['tags'].map((item) => {
               return item + " "
             })}</div>
-            <div>Click for live project.<a href={project['github']} target='_blank'>
-              <i className='fa fa-github github-link' aria-hidden='true'></i></a></div>
+            <div><a href={project.link} target='_blank'><u>Click here to view project.</u></a>
+            <a href={project['github']} target='_blank'>
+            <i className='fa fa-github github-link' aria-hidden='true'></i></a></div>
         </div>
-        </a>
+
+
       </div>
 		)
 }
