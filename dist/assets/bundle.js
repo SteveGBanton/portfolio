@@ -28468,7 +28468,7 @@ var defaultData = {
     description: "Responsive single page website for Boldpoint Studio, a design and marketing firm based in Toronto. Website built from scratch using only jQuery.",
     tags: ['jquery'],
     link: "http://www.boldpointstudio.com",
-    github: "#"
+    github: ""
   }, {
     title: "Recipe Box",
     image: "./images/portfolio/recipe.jpg",
@@ -28487,7 +28487,7 @@ var defaultData = {
     title: "Instant Markdown Previewer",
     image: "./images/portfolio/markdown.jpg",
     description: "An instant markdown previewer built in React.js. When you type markdown, the formatted version is instantly printed to the screen.",
-    tags: ['d3'],
+    tags: ['react'],
     link: "http://stevebanton.com/markdown-previewer",
     github: "https://github.com/SteveGBanton/markdown-previewer"
   }, {
@@ -28503,7 +28503,7 @@ var defaultData = {
     description: "A Wikipedia search page that uses the Wikipedia API to call search results before leaving the site.",
     tags: ['jquery'],
     link: "https://codepen.io/stevesacct/pen/OWdaGe",
-    github: "#"
+    github: ""
   }, {
     title: "Heatmap Graph: Global Land Surface Temperatures",
     image: "./images/portfolio/heatmap.jpg",
@@ -28524,7 +28524,7 @@ var defaultData = {
     description: "A simple pomodoro clock that allows you to add minutes on the fly.",
     tags: ['jquery'],
     link: "https://codepen.io/stevesacct/pen/jBqyOz",
-    github: "#"
+    github: ""
   }, {
     title: "Dynamic Scatterplot Graph: Doping in Pro Cycling",
     image: "./images/portfolio/scatter.jpg",
@@ -28552,7 +28552,7 @@ var defaultData = {
     description: "A website for a local landscaping business in the Toronto area, built using Wordpress.",
     tags: ['wordpress'],
     link: "http://AlbionLandscaping.Net",
-    github: "#"
+    github: ""
   }],
   menuDisplayed: false
 };
@@ -29018,11 +29018,11 @@ var Project = function Project(_ref5) {
             'Click here to view project.'
           )
         ),
-        _react2.default.createElement(
+        project['github'] ? _react2.default.createElement(
           'a',
           { href: project['github'], target: '_blank' },
           _react2.default.createElement('i', { className: 'fa fa-github github-link', 'aria-hidden': 'true' })
-        )
+        ) : null
       )
     )
   );

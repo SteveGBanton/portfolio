@@ -25,7 +25,7 @@ const defaultData = {
       description: "Responsive single page website for Boldpoint Studio, a design and marketing firm based in Toronto. Website built from scratch using only jQuery.",
       tags: ['jquery'],
       link: "http://www.boldpointstudio.com",
-      github: "#"
+      github: ""
     },
     {
       title: "Recipe Box",
@@ -47,7 +47,7 @@ const defaultData = {
       title: "Instant Markdown Previewer",
       image: "./images/portfolio/markdown.jpg",
       description: "An instant markdown previewer built in React.js. When you type markdown, the formatted version is instantly printed to the screen.",
-      tags: ['d3'],
+      tags: ['react'],
       link: "http://stevebanton.com/markdown-previewer",
       github: "https://github.com/SteveGBanton/markdown-previewer"
     },
@@ -65,7 +65,7 @@ const defaultData = {
       description: "A Wikipedia search page that uses the Wikipedia API to call search results before leaving the site.",
       tags: ['jquery'],
       link: "https://codepen.io/stevesacct/pen/OWdaGe",
-      github: "#"
+      github: ""
     },
     {
       title: "Heatmap Graph: Global Land Surface Temperatures",
@@ -89,7 +89,7 @@ const defaultData = {
       description: "A simple pomodoro clock that allows you to add minutes on the fly.",
       tags: ['jquery'],
       link: "https://codepen.io/stevesacct/pen/jBqyOz",
-      github: "#"
+      github: ""
     },
     {
       title: "Dynamic Scatterplot Graph: Doping in Pro Cycling",
@@ -121,7 +121,7 @@ const defaultData = {
       description: "A website for a local landscaping business in the Toronto area, built using Wordpress.",
       tags: ['wordpress'],
       link: "http://AlbionLandscaping.Net",
-      github: "#"
+      github: ""
     }
   ],
   menuDisplayed: false
@@ -469,8 +469,8 @@ const cssStyle = () => {
               return item + " "
             })}</div>
             <div><a href={project.link} target='_blank'><u>Click here to view project.</u></a>
-            <a href={project['github']} target='_blank'>
-            <i className='fa fa-github github-link' aria-hidden='true'></i></a></div>
+            {(project['github']) ? <a href={project['github']} target='_blank'>
+            <i className='fa fa-github github-link' aria-hidden='true'></i></a>:null}</div>
         </div>
 
 
