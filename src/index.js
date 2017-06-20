@@ -568,7 +568,7 @@ const Menu = ( { menu } ) => {
           );
           fadeOff()
 
-          }}>$ Contact Me<span id='blink'> _</span></p>
+          }}>$ Contact Me<span id='blink'> _ </span></p>
           <br />
 
           <div id="chart3"></div>
