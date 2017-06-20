@@ -481,7 +481,7 @@ const cssStyle = () => {
 const Contact = ({  }) => {
 
   return (
-    <div id='contact' className='display'>
+    <div id='contact'>
 
       <h1>Contact</h1>
 
